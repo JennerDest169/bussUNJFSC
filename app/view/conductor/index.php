@@ -42,6 +42,7 @@ include __DIR__ . '/../layout/header.php';
                                     <th>DNI</th>
                                     <th>Teléfono</th>
                                     <th>Licencia</th>
+                                    <th>Estado</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
@@ -49,7 +50,7 @@ include __DIR__ . '/../layout/header.php';
                                 <?php if (!empty($conductores)): ?>
                                     <?php foreach ($conductores as $conductor): ?>
                                         <tr>
-                                            <td><?= htmlspecialchars($conductor['id_conductor']) ?></td>
+                                            <td><?= htmlspecialchars($conductor['id']) ?></td>
                                             <td>
                                                 <span class="fw-bold"><?= htmlspecialchars($conductor['nombre']) ?></span>
                                             </td>
@@ -60,15 +61,20 @@ include __DIR__ . '/../layout/header.php';
                                                     <?= htmlspecialchars($conductor['licencia']) ?>
                                                 </span>
                                             </td>
+                                            <td>
+                                                <span class="badge <?= $conductor['estado'] === 'Disponible' ? 'badge-success' : 'badge-danger' ?>">
+                                                    <?= htmlspecialchars($conductor['estado']) ?>
+                                                </span>
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="/BUSS/index.php?controller=Conductor&action=edit&id=<?= $conductor['id_conductor'] ?>" 
+                                                    <a href="/BUSS/index.php?controller=Conductor&action=edit&id=<?= $conductor['id'] ?>" 
                                                        class="btn btn-warning btn-sm"
                                                        data-toggle="tooltip" 
                                                        title="Editar conductor">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
-                                                    <a href="/BUSS/index.php?controller=Conductor&action=delete&id=<?= $conductor['id_conductor'] ?>" 
+                                                    <a href="/BUSS/index.php?controller=Conductor&action=delete&id=<?= $conductor['id'] ?>" 
                                                        class="btn btn-danger btn-sm" 
                                                        onclick="return confirm('¿Seguro que deseas eliminar este conductor?');"
                                                        data-toggle="tooltip" 

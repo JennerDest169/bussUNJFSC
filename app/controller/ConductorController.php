@@ -1,19 +1,20 @@
 <?php
 require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../models/Conductor.php';
+require_once __DIR__ . '/../model/Conductor.php';
 
 class ConductorController {
     private $conn;
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->connect();
+        $this->conn = $db->getConnection();
     }
 
     public function listar() {
-        $query = "SELECT c.*, b.placa AS bus_placa 
-                  FROM conductores c 
-                  LEFT JOIN buses b ON c.bus_asignado = b.id";
+        $query = "SELECT c.*, b.placa AS bus_placa
+                  FROM conductores c
+                  LEFT JOIN asignaciones a ON a.conductor_id = c.id
+                  LEFT JOIN buses b ON a.bus_id = b.id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

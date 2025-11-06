@@ -6,8 +6,8 @@ require_once __DIR__ . '/../app/controller/ConductorController.php';
 $controller = new ConductorController();
 
 // Obtener los datos
-$buses = $controller->listar();
+$conductores = $controller->listar();
 
 // Incluir la vista y pasarle los datos
-include __DIR__ . '/../app/view/conductores/index.php';
+include __DIR__ . '/../app/view/conductor/index.php';
 ?>

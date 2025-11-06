@@ -7,13 +7,14 @@ class RutaController {
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->connect();
+        $this->conn = $db->getConnection();
     }
 
     public function listar() {
         $query = "SELECT r.*, b.placa AS bus_placa 
                   FROM rutas r 
-                  LEFT JOIN buses b ON r.bus_id = b.id";
+                  LEFT JOIN asignaciones a ON a.ruta_id = r.id
+                  LEFT JOIN buses b ON a.bus_id = b.id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
