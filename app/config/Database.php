@@ -7,7 +7,8 @@ class Database {
     private $port = "3306"; // Agregar puerto
     private $conn;
 
-    public function connect() {
+    public function getConnection()
+    {
         $this->conn = null;
 
         try {
