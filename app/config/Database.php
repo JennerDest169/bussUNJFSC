@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "172.17.0.3";
-    private $db_name = "sigtu_db";
-    private $username = "renzo";
-    private $password = "renzoGA16@";
+    private $host = "localhost";
+    private $db_name = "transporte_unjfsc";
+    private $username = "root";
+    private $password = "";
     private $conn;
 
     public function connect() {
