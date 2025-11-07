@@ -3,7 +3,6 @@
 $exito = $_SESSION['exito'] ?? null;
 $error = $_SESSION['error'] ?? null;
 unset($_SESSION['exito'], $_SESSION['error']);
-session_start();
 $title = "Dashboard - Sistema de Buses UNJFSC";
 include __DIR__ . '/../layout/header.php'; 
 ?>

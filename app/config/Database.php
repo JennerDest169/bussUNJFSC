@@ -4,6 +4,7 @@ class Database {
     private $db_name = "transporte_unjfsc";
     private $username = "root";
     private $password = "";
+    private $port = "3306"; // Agregar puerto
     private $conn;
 
     public function connect()

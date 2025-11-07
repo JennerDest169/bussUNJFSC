@@ -1,5 +1,4 @@
 <?php 
-session_start();
 $title = "Dashboard - Sistema de Buses UNJFSC";
 include __DIR__ . '/../layout/header.php'; 
 ?>

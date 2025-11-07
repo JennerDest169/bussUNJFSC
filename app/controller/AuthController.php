@@ -19,7 +19,6 @@ class AuthController {
             
             if ($resultado !== false) {
                 // Login exitoso
-                session_start();
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
                 
@@ -31,7 +30,6 @@ class AuthController {
                 exit;
             } else {
                 // Login fallido
-                session_start();
                 $_SESSION['error'] = "Credenciales incorrectas";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;
@@ -56,12 +54,10 @@ class AuthController {
             $resultado = $usuario->create($correo, $password, $nombre, $rol);
             
             if ($resultado) {
-                session_start();
                 $_SESSION['exito'] = "Usuario registrado exitosamente";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;
             } else {
-                session_start();
                 $_SESSION['error'] = "El correo ya está registrado o hubo un error";
                 header("Location: index.php?controller=Auth&action=registro");
                 exit;
@@ -71,7 +67,6 @@ class AuthController {
     
     // Cerrar sesión
     public function logout() {
-        session_start();
         session_destroy();
         header("Location: index.php?controller=Auth&action=login");
         exit;
