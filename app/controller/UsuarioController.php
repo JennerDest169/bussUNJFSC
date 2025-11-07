@@ -44,9 +44,16 @@ class UsuarioController {
             $correo = $_POST['correo'] ?? '';
             $password = $_POST['password'] ?? '';
             $nombre = $_POST['nombre'] ?? '';
+<<<<<<< HEAD
             
             $usuario = new Usuario();
             $resultado = $usuario->create($correo, $password, $nombre);
+=======
+            $rol = $_POST['rol'] ?? '';
+            
+            $usuario = new Usuario();
+            $resultado = $usuario->create($correo, $password, $nombre, $rol);
+>>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
             
             if ($resultado) {
                 $_SESSION['exito'] = "Usuario creado exitosamente";

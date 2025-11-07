@@ -64,5 +64,31 @@ class Usuario {
         
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
+<<<<<<< HEAD
 }
 ?>
+=======
+
+    // Eliminar usuario
+public function delete($id) {
+    $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    return $stmt->execute();
+}
+
+// Actualizar usuario (opcional)
+public function update($id, $nombre, $rol, $estado) {
+    $query = "UPDATE " . $this->table . " SET nombre=:nombre, rol=:rol, estado=:estado WHERE id=:id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':nombre', $nombre);
+    $stmt->bindParam(':rol', $rol);
+    $stmt->bindParam(':estado', $estado);
+    $stmt->bindParam(':id', $id);
+    return $stmt->execute();
+}
+
+
+}
+?>
+>>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
