@@ -19,15 +19,13 @@ class AuthController {
             
             if ($resultado !== false) {
                 // Login exitoso
-                session_start();
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
                 
-                header("Location: index.php?controller=Dashboard&action=index"); //redireccion
+                header("Location: index.php?controller=Dashboard&action=index");
                 exit;
             } else {
                 // Login fallido
-                session_start();
                 $_SESSION['error'] = "Credenciales incorrectas";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;
