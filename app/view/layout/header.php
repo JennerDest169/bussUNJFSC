@@ -85,19 +85,19 @@
                             <h4 class="text-section">Gestión de Transporte</h4>
                         </li>
                         <li class="nav-item <?= $is_buses ? 'active' : '' ?>">
-                            <a href="buses.php">
+                            <a href="index.php?controller=Buses&action=listar">
                                 <i class="fas fa-bus"></i>
                                 <p>Buses</p>
                             </a>
                         </li>
                         <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
-                            <a href="conductores.php">
+                            <a href="index.php?controller=Conductor&action=listar">
                                 <i class="fas fa-user-tie"></i>
                                 <p>Conductores</p>
                             </a>
                         </li>
                         <li class="nav-item <?= $is_rutas ? 'active' : '' ?>">
-                            <a href="rutas.php">
+                            <a href="index.php?controller=Ruta&action=listar">
                                 <i class="fas fa-route"></i>
                                 <p>Rutas</p>
                             </a>

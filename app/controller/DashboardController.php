@@ -10,7 +10,6 @@ class DashboardController {
     }
     
     public function index() {
-        session_start();
         
         // Verificar que esté logueado
         if (!isset($_SESSION['logueado'])) {
@@ -26,7 +25,6 @@ class DashboardController {
     }
     
     private function getDashboardStats() {
-        session_start();
         
         // Verificar que esté logueado
         if (!isset($_SESSION['logueado'])) {
