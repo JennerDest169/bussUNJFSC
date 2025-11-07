@@ -4,10 +4,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title><?php echo isset($title) ? $title : 'Sistema de Buses UNJFSC'; ?></title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="../../public/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../../../public/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <!-- Fonts and icons -->
-    <script src="../../public/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="../../../public/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
         WebFont.load({
             google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -18,7 +18,7 @@
                     "Font Awesome 5 Brands",
                     "simple-line-icons",
                 ],
-                urls: ["../../public/assets/css/fonts.min.css"],
+                urls: ["../../../public/assets/css/fonts.min.css"],
             },
             active: function () {
                 sessionStorage.fonts = true;
@@ -27,10 +27,10 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../../public/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../public/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../../public/assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="../../public/assets/css/demo.css" />
+    <link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../public/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../../../public/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../../../public/assets/css/demo.css" />
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -42,8 +42,8 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="dashboard.php" class="logo">
-                        <img src="../../public/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="160" />
+                    <a href="index.php?controller=Dashboard&action=index" class="logo">
+                        <img src="../../../public/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="160" />
                     </a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
@@ -72,8 +72,8 @@
                         $is_rutas = ($current_page == 'rutas.php');
                         ?>
                         
-                        <li class="nav-item <?= $is_dashboard ? 'active' : '' ?>">
-                            <a href="dashboard.php">
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="index.php?controller=Dashboard&action=index">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -107,7 +107,7 @@
                                 <i class="fas fa-user"></i>
                                 <p>Usuarios</p>
                             </a>
-                        <li/>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -119,8 +119,8 @@
                 <div class="main-header-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="../../public/index.php" class="logo">
-                            <img src="../../public/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                        <a href="index.php?controller=Dashboard&action=index"> class="logo">
+                            <img src="../../../public/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">

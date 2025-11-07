@@ -10,6 +10,20 @@ class BusController {
         $this->conn = $db->getConnection();
     }
 
+    public function index() {
+        session_start();
+        
+        // Verificar que esté logueado
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+        
+        $buses = $this->listar();
+        
+        include __DIR__ . '/../view/bus/index.php';
+    }
+
     public function listar() {
         $query = "SELECT * FROM buses";
         $stmt = $this->conn->prepare($query);
