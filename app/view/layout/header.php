@@ -108,6 +108,18 @@
                                 <p>Usuarios</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="index.php?controller=Incidencia&action=index">
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                <p>Incidencias</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="index.php?controller=Comunicado&action=index">
+                                <i class="fa fa-comment" aria-hidden="true"></i>
+                                <p>Comunicados</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
