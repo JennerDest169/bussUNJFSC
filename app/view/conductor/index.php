@@ -10,9 +10,9 @@ include __DIR__ . '/../layout/header.php';
             <h6 class="op-7 mb-2">Administre los conductores del sistema de transporte</h6>
         </div>
         <div class="ms-md-auto py-2 py-md-0">
-            <a href="/BUSS/index.php?controller=Conductor&action=create" class="btn btn-primary btn-round">
+            <button type="button" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#crearConductorModal">
                 <i class="bi bi-person-plus me-2"></i>Nuevo Conductor
-            </a>
+            </button>
         </div>
     </div>
 
@@ -22,14 +22,6 @@ include __DIR__ . '/../layout/header.php';
                 <div class="card-header">
                     <div class="card-head-row">
                         <div class="card-title">Lista de Conductores</div>
-                        <div class="card-tools">
-                            <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
-                                <span class="btn-label">
-                                    <i class="fa fa-print"></i>
-                                </span>
-                                Exportar
-                            </a>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -68,26 +60,36 @@ include __DIR__ . '/../layout/header.php';
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="/BUSS/index.php?controller=Conductor&action=edit&id=<?= $conductor['id'] ?>" 
-                                                       class="btn btn-warning btn-sm"
-                                                       data-toggle="tooltip" 
-                                                       title="Editar conductor">
+                                                    <button type="button" class="btn btn-warning btn-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editarConductorModal"
+                                                            onclick="cargarDatosEditarConductor(
+                                                                <?= $conductor['id'] ?>, 
+                                                                '<?= $conductor['nombre'] ?>', 
+                                                                '<?= $conductor['dni'] ?>', 
+                                                                '<?= $conductor['telefono'] ?>', 
+                                                                '<?= $conductor['licencia'] ?>', 
+                                                                '<?= $conductor['estado'] ?>'
+                                                            )">
                                                         <i class="bi bi-pencil"></i>
-                                                    </a>
-                                                    <a href="/BUSS/index.php?controller=Conductor&action=delete&id=<?= $conductor['id'] ?>" 
-                                                       class="btn btn-danger btn-sm" 
-                                                       onclick="return confirm('¿Seguro que deseas eliminar este conductor?');"
-                                                       data-toggle="tooltip" 
-                                                       title="Eliminar conductor">
-                                                        <i class="bi bi-trash"></i>
-                                                    </a>
+                                                    </button>
+                                                    <?php
+                                                        if ($conductor['estado'] != 'Inactivo') {
+                                                            echo '<a href="index.php?controller=Conductor&action=eliminar&id=' . $conductor['id'] . '" 
+                                                                class="btn btn-danger btn-sm" 
+                                                                onclick="return confirm(\'¿Seguro que deseas eliminar este conductor?\');">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </a>';
+                                                        }
+                                                    ?>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
+                                        <td colspan="7" class="text-center py-4">
                                             <div class="empty-state">
                                                 <i class="fas fa-user-tie fa-3x text-muted mb-3"></i>
                                                 <h4 class="text-muted">No hay conductores registrados</h4>
@@ -104,5 +106,119 @@ include __DIR__ . '/../layout/header.php';
         </div>
     </div>
 </div>
+
+<!-- Modal para Crear Conductor -->
+<div class="modal fade" id="crearConductorModal" tabindex="-1" aria-labelledby="crearConductorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crearConductorModalLabel">
+                    <i class="bi bi-person-plus me-2"></i>Nuevo Conductor
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="index.php?controller=Conductor&action=crear">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI *</label>
+                        <input type="text" class="form-control" id="dni" name="dni" required maxlength="8">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono">
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label">Correo</label>
+                        <input type="emaul" class="form-control" id="correo" name="correo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="licencia" class="form-label">Licencia *</label>
+                        <input type="text" class="form-control" id="licencia" name="licencia" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado *</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="Disponible">Disponible</option>
+                            <option value="En ruta">En ruta</option>
+                            <option value="Inactivo">Licencia</option>
+                            <option value="Licencia">Licencia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Conductor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Conductor -->
+<div class="modal fade" id="editarConductorModal" tabindex="-1" aria-labelledby="editarConductorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarConductorModalLabel">
+                    <i class="bi bi-pencil me-2"></i>Editar Conductor
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="index.php?controller=Conductor&action=actualizar">
+                <input type="hidden" name="id" id="editar_id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editar_nombre" class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-control" id="editar_nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar_dni" class="form-label">DNI *</label>
+                        <input type="text" class="form-control" id="editar_dni" name="dni" required maxlength="8">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar_telefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="editar_telefono" name="telefono">
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label">Correo</label>
+                        <input type="emaul" class="form-control" id="correo" name="correo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar_licencia" class="form-label">Licencia *</label>
+                        <input type="text" class="form-control" id="editar_licencia" name="licencia" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar_estado" class="form-label">Estado *</label>
+                        <select class="form-select" id="editar_estado" name="estado" required>
+                            <option value="Disponible">Disponible</option>
+                            <option value="En ruta">En ruta</option>
+                            <option value="Inactivo">Licencia</option>
+                            <option value="Licencia">Licencia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Conductor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function cargarDatosEditarConductor(id, nombre, dni, telefono, licencia, estado) {
+    document.getElementById('editar_id').value = id;
+    document.getElementById('editar_nombre').value = nombre;
+    document.getElementById('editar_dni').value = dni;
+    document.getElementById('editar_telefono').value = telefono;
+    document.getElementById('editar_licencia').value = licencia;
+    document.getElementById('editar_estado').value = estado;
+}
+</script>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>

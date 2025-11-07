@@ -45,11 +45,14 @@ include __DIR__ . '/../layout/header.php';
                                         onclick="cargarDatosEditar(<?= $bus['id'] ?>, '<?= $bus['placa'] ?>', '<?= $bus['modelo'] ?>', <?= $bus['capacidad'] ?>, '<?= $bus['estado'] ?>')">
                                     <i class="bi bi-pencil"></i> Editar
                                 </button>
-                                <a href="bus.php?eliminar=<?= $bus['id'] ?>" 
-                                   class="btn btn-danger btn-sm" 
-                                   onclick="return confirm('¿Seguro que deseas eliminar este bus?');">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </a>
+                                <?php
+                                    if ($bus['estado'] != 'Inactivo') {
+                                        echo '<a href="index.php?controller=Bus&action=eliminar&id=' . $bus['id'] . '" 
+                                            class="btn btn-danger btn-sm" 
+                                            onclick="return confirm(\'¿Seguro que deseas eliminar este bus?\');">
+                                            <i class="bi bi-trash"></i> Eliminar </a>';
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -82,7 +85,7 @@ include __DIR__ . '/../layout/header.php';
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="bus.php">
+            <form method="POST" action="index.php?controller=Bus&action=crear">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="placa" class="form-label">Placa *</label>
@@ -124,7 +127,7 @@ include __DIR__ . '/../layout/header.php';
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="bus.php">
+            <form method="POST" action="index.php?controller=Bus&action=actualizar">
                 <input type="hidden" name="id" id="editar_id">
                 <div class="modal-body">
                     <div class="mb-3">
