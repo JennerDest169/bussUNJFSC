@@ -52,18 +52,10 @@ class AuthController {
             $resultado = $usuario->create($correo, $password, $nombre, $rol);
             
             if ($resultado) {
-<<<<<<< HEAD
-=======
-                session_start();
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
                 $_SESSION['exito'] = "Usuario registrado exitosamente";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;
             } else {
-<<<<<<< HEAD
-=======
-                session_start();
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
                 $_SESSION['error'] = "El correo ya está registrado o hubo un error";
                 header("Location: index.php?controller=Auth&action=registro");
                 exit;
@@ -73,10 +65,6 @@ class AuthController {
     
     // Cerrar sesión
     public function logout() {
-<<<<<<< HEAD
-=======
-        session_start();
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
         session_destroy();
         header("Location: index.php?controller=Auth&action=login");
         exit;
