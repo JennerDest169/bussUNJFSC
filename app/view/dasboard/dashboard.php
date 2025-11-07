@@ -1,9 +1,10 @@
 <?php 
+session_start();
 $title = "Dashboard - Sistema de Buses UNJFSC";
-include __DIR__ . '/../app/view/layout/header.php'; 
+include __DIR__ . '/../layout/header.php'; 
 ?>
 
-<div class="container">
+<div class="container-fluir">
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
@@ -447,4 +448,4 @@ include __DIR__ . '/../app/view/layout/header.php';
     </div>
 </div>
 
-<?php include __DIR__ . '/../app/view/layout/footer.php'; ?>
+<?php include __DIR__ . '/../layout/footer.php'; ?>

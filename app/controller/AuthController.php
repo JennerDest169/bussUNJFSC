@@ -23,7 +23,7 @@ class AuthController {
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
                 
-                header("Location: index.php?controller=Usuario&action=index");
+                header("Location: index.php?controller=Dashboard&action=index");
                 exit;
             } else {
                 // Login fallido

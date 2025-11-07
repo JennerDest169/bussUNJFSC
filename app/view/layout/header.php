@@ -102,6 +102,12 @@
                                 <p>Rutas</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="index.php?controller=Usuario&action=index">
+                                <i class="fas fa-user"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        <li/>
                     </ul>
                 </div>
             </div>
@@ -133,83 +139,7 @@
                 <!-- Navbar Header -->
                 <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
                     <div class="container-fluid">
-                        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button type="submit" class="btn btn-search pe-1">
-                                        <i class="fa fa-search search-icon"></i>
-                                    </button>
-                                </div>
-                                <input type="text" placeholder="Search ..." class="form-control" />
-                            </div>
-                        </nav>
-
                         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <!-- Menú de mensajes -->
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                                <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
-                                    <li>
-                                        <div class="dropdown-title d-flex justify-content-between align-items-center">
-                                            Mensajes
-                                            <a href="#" class="small">Marcar todos como leídos</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="message-notif-scroll scrollbar-outer">
-                                            <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-content">
-                                                        <span class="subject">Sistema de Buses</span>
-                                                        <span class="block">Nuevo conductor registrado</span>
-                                                        <span class="time">5 minutos ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            
-                            <!-- Notificaciones -->
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="notification">3</span>
-                                </a>
-                                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
-                                    <li>
-                                        <div class="dropdown-title">Tienes 3 nuevas notificaciones</div>
-                                    </li>
-                                    <li>
-                                        <div class="notif-scroll scrollbar-outer">
-                                            <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-icon notif-primary">
-                                                        <i class="fa fa-bus"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">Nuevo bus agregado</span>
-                                                        <span class="time">Hace 2 horas</span>
-                                                    </div>
-                                                </a>
-                                                <a href="#">
-                                                    <div class="notif-icon notif-success">
-                                                        <i class="fa fa-route"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block">Ruta actualizada</span>
-                                                        <span class="time">Hace 5 horas</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-
                             <!-- Perfil de usuario -->
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
@@ -218,29 +148,43 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hola,</span>
-                                        <span class="fw-bold">Administrador</span>
+                                        <span class="fw-bold">
+                                            <?php
+                                            $usuario = $_SESSION['usuario'];
+                                            echo "" . $usuario['nombre'];
+                                            ?>
+                                        </span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                                     <div class="dropdown-user-scroll scrollbar-outer">
                                         <li>
                                             <div class="user-box">
-                                                <div class="avatar-lg">
-                                                    <img src="/BUSS/public/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
-                                                </div>
                                                 <div class="u-text">
-                                                    <h4>Administrador</h4>
-                                                    <p class="text-muted">admin@unjfsc.edu.pe</p>
-                                                    <a href="#" class="btn btn-xs btn-secondary btn-sm">Ver Perfil</a>
+                                                    <h4>
+                                                        <?php
+                                                $usuario = $_SESSION['usuario'];
+                                                echo "" . $usuario['nombre'];
+                                                ?>
+                                                    </h4>
+                                                    <p class="text-muted">
+                                                        <?php
+                                                $usuario = $_SESSION['usuario'];
+                                                echo "" . $usuario['correo'];
+                                                ?>
+                                                    </p>
+                                                    <p class="text-muted">
+                                                        <?php
+                                                $usuario = $_SESSION['usuario'];
+                                                echo "" . $usuario['rol'];
+                                                ?>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Mi Perfil</a>
-                                            <a class="dropdown-item" href="#">Configuración</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                                            <a class="dropdown-item" href="index.php?controller=Auth&action=logout">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -254,3 +198,75 @@
             <!-- Content Area -->
             <div class="content" style="margin-top: 40px;">
                 <div class="page-inner">
+                        <!--   Core JS Files   -->
+    <script src="../../../public/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../../../public/assets/js/core/popper.min.js"></script>
+    <script src="../../../public/assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../../public/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="../../../public/assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="../../../public/assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="../../../public/assets/js/setting-demo2.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#basic-datatables").DataTable({});
+
+        $("#multi-filter-select").DataTable({
+          pageLength: 5,
+          initComplete: function () {
+            this.api()
+              .columns()
+              .every(function () {
+                var column = this;
+                var select = $(
+                  '<select class="form-select"><option value=""></option></select>'
+                )
+                  .appendTo($(column.footer()).empty())
+                  .on("change", function () {
+                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column
+                      .search(val ? "^" + val + "$" : "", true, false)
+                      .draw();
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (d, j) {
+                    select.append(
+                      '<option value="' + d + '">' + d + "</option>"
+                    );
+                  });
+              });
+          },
+        });
+
+        // Add Row
+        $("#add-row").DataTable({
+          pageLength: 5,
+        });
+
+        var action =
+          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+        $("#addRowButton").click(function () {
+          $("#add-row")
+            .dataTable()
+            .fnAddData([
+              $("#addName").val(),
+              $("#addPosition").val(),
+              $("#addOffice").val(),
+              action,
+            ]);
+          $("#addRowModal").modal("hide");
+        });
+      });
+    </script>
+  </body>
+</html>
