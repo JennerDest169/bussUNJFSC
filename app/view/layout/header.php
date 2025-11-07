@@ -85,7 +85,7 @@
                             <h4 class="text-section">Gestión de Transporte</h4>
                         </li>
                         <li class="nav-item <?= $is_buses ? 'active' : '' ?>">
-                            <a href="index.php?controller=Buses&action=listar">
+                            <a href="index.php?controller=Bus&action=index">
                                 <i class="fas fa-bus"></i>
                                 <p>Buses</p>
                             </a>

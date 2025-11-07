@@ -7,11 +7,10 @@ class BusController {
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->conn = $db->connect();
     }
 
     public function index() {
-        session_start();
         
         // Verificar que esté logueado
         if (!isset($_SESSION['logueado'])) {

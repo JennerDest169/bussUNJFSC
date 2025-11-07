@@ -7,17 +7,25 @@ class ConductorController {
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->conn = $db->connect();
     }
 
     public function listar() {
+
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+
         $query = "SELECT c.*, b.placa AS bus_placa
                   FROM conductores c
                   LEFT JOIN asignaciones a ON a.conductor_id = c.id
                   LEFT JOIN buses b ON a.bus_id = b.id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conductores = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../view/conductor/index.php';
     }
 
     public function obtenerPorId($id) {
