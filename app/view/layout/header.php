@@ -97,7 +97,7 @@
                             </a>
                         </li>
                         <li class="nav-item <?= $is_rutas ? 'active' : '' ?>">
-                            <a href="index.php?controller=Ruta&action=listar">
+                            <a href="index.php?controller=Ruta&action=index">
                                 <i class="fas fa-route"></i>
                                 <p>Rutas</p>
                             </a>
