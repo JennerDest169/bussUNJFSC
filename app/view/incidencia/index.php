@@ -35,7 +35,7 @@ include __DIR__ . '/../layout/header.php';
               <!-- Estadísticas -->
               <div class="row mb-4">
                 <div class="col-sm-6 col-md-4">
-                  <div class="card card-stats card-round">
+                  <div class="card incident-card pendiente card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-icon">
@@ -54,7 +54,7 @@ include __DIR__ . '/../layout/header.php';
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
-                  <div class="card card-stats card-round">
+                  <div class="card incident-card en-proceso card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-icon">
@@ -73,7 +73,7 @@ include __DIR__ . '/../layout/header.php';
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
-                  <div class="card card-stats card-round">
+                  <div class="card incident-card resuelto card-stats card-round">
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-icon">
@@ -196,11 +196,6 @@ include __DIR__ . '/../layout/header.php';
                       'En proceso' => 'fa-spinner',
                       'Resuelto' => 'fa-check-circle'
                     ];
-                    $color_map = [
-                      'Pendiente' => '#FFC107',
-                      'En proceso' => '#1572E8',
-                      'Resuelto' => '#31CE36'
-                    ];
                   ?>
                   <div class="col-md-12 mb-3 incidencia-item" 
                        data-fecha="<?= strtotime($inc['fecha_reporte']) ?>"
@@ -210,7 +205,7 @@ include __DIR__ . '/../layout/header.php';
                       <div class="card-body">
                         <div class="row align-items-center">
                           <!-- Columna del estado (icono + texto) -->
-                          <div class="col-auto">
+                          <div class="col-auto col-tipo">
                             <div class="d-flex flex-column align-items-center">
                               <i class="fas <?= $icon_map[$inc['estado']] ?> status-icon <?= $estado_class ?>"></i>
                               <span class="fw-bold status-icon <?= $estado_class ?>" style="font-size: 1rem;">
@@ -258,4 +253,6 @@ include __DIR__ . '/../layout/header.php';
             <?php endif; ?>
 
           </div>
+
+
         <?php include __DIR__ . '/../layout/footer.php'; ?>

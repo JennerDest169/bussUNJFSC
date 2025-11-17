@@ -1,0 +1,188 @@
+/*INCIDENCIAS*/
+.col-tipo {
+      width: 125px;
+      /* ajusta según el espacio que quieras */
+      text-align: center;
+    }
+
+    .incident-card {
+      border-left: 5px solid;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .incident-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .incident-card.pendiente {
+      border-left-color: #FFC107;
+    }
+
+    .incident-card.en-proceso {
+      border-left-color: #1572E8;
+    }
+
+    .incident-card.resuelto {
+      border-left-color: #31CE36;
+    }
+
+    /* Estilos para el icono de estado */
+    .status-icon {
+      font-size: 2.5rem;
+      margin-right: 15px;
+    }
+
+    .status-icon.pendiente {
+      color: #FFC107;
+    }
+
+    .status-icon.en-proceso {
+      color: #1572E8;
+    }
+
+    .status-icon.resuelto {
+      color: #31CE36;
+    }
+
+    /* Estilos para el botón de reportar incidencia */
+    .btn-report {
+      padding: 20px 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      background-color: #FFC107 !important;
+      border: none !important;
+      color: #000 !important;
+      border-radius: 10px;
+      transition: all 0.3s;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn-report:hover {
+      background-color: #FFB300 !important;
+      color: #000 !important;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    }
+
+    .btn-report i {
+      margin-right: 10px;
+      font-size: 1.4rem;
+    }
+
+
+/*INCIDENCIA - REPORTE*/
+.report-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+    /*COMUNICADOS*/
+    /* Estilos adicionales para comunicados */
+  .col-prioridad {
+    width: 125px;
+    /* ajusta según el espacio que quieras */
+    text-align: center;
+  }
+
+  .comunicado-card {
+    border-left: 5px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .comunicado-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .comunicado-card.normal {
+    border-left-color: #9C27B0;
+  }
+
+  .comunicado-card.importante {
+    border-left-color: #FF9800;
+  }
+
+  .comunicado-card.urgente {
+    border-left-color: #F44336;
+  }
+
+  .prioridad-icon {
+    font-size: 2.5rem;
+    margin-right: 15px;
+  }
+
+  .prioridad-icon.normal {
+    color: #9C27B0;
+  }
+
+  .prioridad-icon.importante {
+    color: #FF9800;
+  }
+
+  .prioridad-icon.urgente {
+    color: #F44336;
+  }
+
+  .btn-nuevo-comunicado {
+    padding: 20px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background-color: #F44336 !important;
+    border: none !important;
+    color: #fff !important;
+    border-radius: 10px;
+    transition: all 0.3s;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-nuevo-comunicado:hover {
+    background-color: #f00000 !important;
+    color: #fff !important;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+  }
+
+  .btn-nuevo-comunicado i {
+    margin-right: 10px;
+    font-size: 1.4rem;
+  }
+
+  .estado-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+  }
+
+  .estado-badge.activo {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+  }
+
+  .estado-badge.inactivo {
+    background-color: #FFEBEE;
+    color: #C62828;
+  }
+
+  .estado-badge .circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .estado-badge.activo .circle {
+    background-color: #4CAF50;
+  }
+
+  .estado-badge.inactivo .circle {
+    background-color: #F44336;
+  }
