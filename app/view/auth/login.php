@@ -1,5 +1,4 @@
 <?php
-session_start();
 $error = $_SESSION['error'] ?? null;
 $exito = $_SESSION['exito'] ?? null;
 unset($_SESSION['error'], $_SESSION['exito']);

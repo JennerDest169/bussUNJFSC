@@ -5,8 +5,6 @@ class UsuarioController {
     
     // Listar todos los usuarios
     public function index() {
-        session_start();
-        
         // Verificar que esté logueado
         if (!isset($_SESSION['logueado'])) {
             header("Location: index.php?controller=Auth&action=login");
@@ -18,66 +16,86 @@ class UsuarioController {
         
         include __DIR__ . '/../view/usuario/index.php';
     }
-    
+
     // Mostrar formulario para crear usuario
     public function crear() {
-        session_start();
         
         if (!isset($_SESSION['logueado'])) {
             header("Location: index.php?controller=Auth&action=login");
             exit;
         }
-        
-        include __DIR__ . '/../view/usuario/crear.php';
-    }
-    
-    // Guardar nuevo usuario
-    public function store() {
-        session_start();
-        
-        if (!isset($_SESSION['logueado'])) {
-            header("Location: index.php?controller=Auth&action=login");
-            exit;
-        }
-        
+
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $correo = $_POST['correo'] ?? '';
             $password = $_POST['password'] ?? '';
             $nombre = $_POST['nombre'] ?? '';
             $rol = $_POST['rol'] ?? '';
-            
+
             $usuario = new Usuario();
             $resultado = $usuario->create($correo, $password, $nombre, $rol);
             
             if ($resultado) {
-                $_SESSION['exito'] = "Usuario creado exitosamente";
+                $_SESSION['exito'] = "Usuario registrado exitosamente";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
             } else {
-                $_SESSION['error'] = "Error al crear usuario";
+                $_SESSION['error'] = "El correo ya está registrado o hubo un error";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
             }
-            
-            header("Location: index.php?controller=Usuario&action=index");
-            exit;
         }
     }
-    
-    // Eliminar usuario (opcional)
-    public function eliminar() {
-        session_start();
-        
+
+    public function actualizar(){
         if (!isset($_SESSION['logueado'])) {
             header("Location: index.php?controller=Auth&action=login");
             exit;
         }
-        
-        $id = $_GET['id'] ?? null;
-        
-        if ($id) {
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $id = $_POST['id'] ?? '';
+            $nombre = $_POST['nombre'] ?? '';
+            $rol = $_POST['rol'] ?? '';
+            $estado = $_POST['estado'] ?? '';
+            
+
             $usuario = new Usuario();
-            $usuario->delete($id);
+            $resultado = $usuario->update($estado, $nombre, $rol, $id);
+            
+            if ($resultado) {
+                $_SESSION['exito'] = "Usuario editado exitosamente";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
+            } else {
+                $_SESSION['error'] = "El correo ya está registrado o hubo un error";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
+            }
         }
-        
-        header("Location: index.php?controller=Usuario&action=index");
-        exit;
+    }
+
+    public function eliminar(){
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $id = $_POST['id'] ?? '';
+            
+            $usuario = new Usuario();
+            $resultado = $usuario->delete($id);
+            
+            if ($resultado) {
+                $_SESSION['exito'] = "Usuario eliminado exitosamente";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
+            } else {
+                $_SESSION['error'] = "El correo ya está registrado o hubo un error";
+                header("Location: index.php?controller=Usuario&action=index");
+                exit;
+            }
+        }
     }
 }
 ?>

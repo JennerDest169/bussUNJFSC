@@ -11,7 +11,7 @@ class Usuario {
     }
 
     public function login($correo, $password) {
-        $query = "SELECT * FROM " . $this->table . " WHERE correo = :correo LIMIT 1";
+        $query = "SELECT * FROM " . $this->table . " WHERE correo = :correo AND estado = 'Activo' LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':correo', $correo);
         $stmt->execute();
@@ -65,25 +65,32 @@ class Usuario {
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
 
-    // Eliminar usuario
-public function delete($id) {
-    $query = "DELETE FROM " . $this->table . " WHERE id = :id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
+    // Actualizar usuario
+    public function update($estado, $nombre, $rol, $id) {
+        if ($this->emailExists($correo)) {
+            return false; // El correo ya está registrado
+        }
 
-// Actualizar usuario (opcional)
-public function update($id, $nombre, $rol, $estado) {
-    $query = "UPDATE " . $this->table . " SET nombre=:nombre, rol=:rol, estado=:estado WHERE id=:id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':nombre', $nombre);
-    $stmt->bindParam(':rol', $rol);
-    $stmt->bindParam(':estado', $estado);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
-}
+        $query = "UPDATE " . $this->table . " SET nombre = :nombre, rol = :rol, estado = :estado WHERE id = :id";
 
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':rol', $rol);
+        $stmt->bindParam(':id', $id);
+        
+        return $stmt->execute();
+    }
 
+    //eliminacion logica del usuario
+    public function delete($id) {
+
+        $query = "UPDATE " . $this->table . " SET estado = 'Inactivo' WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        
+        return $stmt->execute();
+    }
 }
 ?>

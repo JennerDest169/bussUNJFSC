@@ -1,24 +1,34 @@
 <?php
-// Define una constante BASE_URL para rutas absolutas
-define('BASE_URL', '/20252Buses/bussUNJFSC/');
+session_start();
 
-// Ejemplo típico de index.php con enrutamiento
+// Controlador y acción por defecto
 $controller = $_GET['controller'] ?? 'Auth';
 $action = $_GET['action'] ?? 'login';
 
+// ⚠️ IMPORTANTE: Ajusta esta ruta según tu estructura
+// Tu carpeta es "controller" (singular), no "controllers"
 $controllerFile = __DIR__ . '/app/controller/' . $controller . 'Controller.php';
 
-if(file_exists($controllerFile)) {
+// Debug: Descomentar para ver la ruta que está buscando
+// echo "Buscando: " . $controllerFile . "<br>";
+// echo "Existe: " . (file_exists($controllerFile) ? 'SI' : 'NO') . "<br>";
+// exit;
+
+if (file_exists($controllerFile)) {
     require_once $controllerFile;
-    $controllerClass = $controller . 'Controller';
-    $controllerObj = new $controllerClass();
     
-    if(method_exists($controllerObj, $action)) {
-        $controllerObj->$action();
+    $controllerClass = $controller . 'Controller';
+    $obj = new $controllerClass();
+    
+    if (method_exists($obj, $action)) {
+        $obj->$action();
     } else {
-        echo "Acción no encontrada";
+        http_response_code(404);
+        echo "Acción no encontrada: " . htmlspecialchars($action);
     }
 } else {
-    echo "Controlador no encontrado";
+    http_response_code(404);
+    echo "Controlador no encontrado: " . htmlspecialchars($controller);
+    echo "<br>Ruta buscada: " . $controllerFile;
 }
 ?>
