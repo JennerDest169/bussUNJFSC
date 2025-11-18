@@ -22,7 +22,8 @@ class AuthController {
                 session_start();
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
-                
+                $_SESSION['rol'] = $resultado['rol'];//almacenar rol
+
                 header("Location: index.php?controller=Dashboard&action=index"); //redireccion
                 exit;
             } else {

@@ -30,7 +30,6 @@
     <link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="../../../public/assets/css/demo.css" />
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -88,6 +87,12 @@
                             <a href="index.php?controller=Bus&action=index">
                                 <i class="fas fa-bus"></i>
                                 <p>Buses</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= $is_RastreoGPS ? 'active' : '' ?>">
+                            <a href="index.php?controller=RastreoGPS&action=index">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <p>RastreoGPS</p>
                             </a>
                         </li>
                         <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
@@ -222,7 +227,7 @@
     <!-- Kaiadmin JS -->
     <script src="../../../public/assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../../../public/assets/js/setting-demo2.js"></script>
+
     <script>
       $(document).ready(function () {
         $("#basic-datatables").DataTable({});
