@@ -1,5 +1,4 @@
 <?php
-session_start();
 $error = $_SESSION['error'] ?? null;
 $exito = $_SESSION['exito'] ?? null;
 unset($_SESSION['error'], $_SESSION['exito']);
@@ -19,11 +18,7 @@ unset($_SESSION['error'], $_SESSION['exito']);
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-<<<<<<< HEAD
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-=======
-            background: linear-gradient(135deg, #667eea 0%, #4ba276ff 100%);
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -119,11 +114,7 @@ unset($_SESSION['error'], $_SESSION['exito']);
         button {
             width: 100%;
             padding: 14px;
-<<<<<<< HEAD
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-=======
-            background: linear-gradient(135deg, #667eea 0%, #4ba276ff 100%);
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
             color: white;
             border: none;
             border-radius: 8px;

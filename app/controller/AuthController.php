@@ -19,17 +19,17 @@ class AuthController {
             
             if ($resultado !== false) {
                 // Login exitoso
+                session_start();
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
-                
-<<<<<<< HEAD
-                header("Location: index.php?controller=Dashboard&action=index");
-=======
-                header("Location: index.php?controller=Incidencia&action=index"); //redireccion
->>>>>>> 669d71246efa76798f9d9bbe9ac59b7d79333bca
+                $_SESSION['rol'] = $resultado['rol'];//almacenar rol
+                $_SESSION['usuario_id'] = $resultado['id'];//almacenar id usuario
+
+                header("Location: index.php?controller=Dashboard&action=index"); //redireccion
                 exit;
             } else {
                 // Login fallido
+                session_start();
                 $_SESSION['error'] = "Credenciales incorrectas";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;
