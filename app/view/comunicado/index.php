@@ -1,4 +1,8 @@
+<!--index.php - comunicado-->
 <?php
+$exito = $_SESSION['exito'] ?? null;
+$error = $_SESSION['error'] ?? null;
+unset($_SESSION['exito'], $_SESSION['error']);
 $title = "Gestión de Comunicados";
 include __DIR__ . '/../layout/header.php';
 ?>
@@ -7,9 +11,7 @@ include __DIR__ . '/../layout/header.php';
   <div class="page-header">
     <h3 class="fw-bold mb-3">Gestión de Comunicados</h3>
     <ul class="breadcrumbs mb-3">
-      <li class="nav-home"><a href="index.php?controller=Usuario&action=index"><i class="icon-home"></i></a></li>
-      <li class="separator"><i class="icon-arrow-right"></i></li>
-      <li class="nav-item"><a href="#">Comunicación</a></li>
+      <li class="nav-home"><a href="index.php?controller=Dashboard&action=index"><i class="icon-home"></i></a></li>
       <li class="separator"><i class="icon-arrow-right"></i></li>
       <li class="nav-item"><a href="#">Comunicados</a></li>
     </ul>
@@ -50,7 +52,7 @@ include __DIR__ . '/../layout/header.php';
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-icon">
-                <div class="icon-big text-center bubble-shadow-small" style="background-color: #9C27B0; border-radius: 10%;">
+                <div class="icon-big text-center bubble-shadow-small" style="background-color: #6c757d; border-radius: 10%;">
                   <i class="fas fa-info-circle" style="color: white;"></i>
                 </div>
               </div>
@@ -128,10 +130,10 @@ include __DIR__ . '/../layout/header.php';
               <table id="comunicados-table" class="display table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Autor</th>
+                    <th></th> <!-- ⭐ Columna de control para la flecha -->
                     <th>Tipo</th>
-                    <th>Fecha Publicación</th>
                     <th>Prioridad</th>
+                    <th>Fecha</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                   </tr>
@@ -140,9 +142,8 @@ include __DIR__ . '/../layout/header.php';
                   <?php if (!empty($comunicados)): ?>
                     <?php foreach ($comunicados as $com): ?>
                       <tr>
-                        <td><?= htmlspecialchars($com['autor'] ?? 'Sistema') ?></td>
+                        <td></td> <!-- ⭐ Celda vacía para la flecha -->
                         <td><span class="badge bg-info"><?= htmlspecialchars($com['tipo']) ?></span></td>
-                        <td><?= date('d/m/Y H:i', strtotime($com['fecha_publicacion'])) ?></td>
                         <td>
                           <?php
                           $prioridad_colors = [
@@ -155,6 +156,7 @@ include __DIR__ . '/../layout/header.php';
                             <?= htmlspecialchars($com['prioridad']) ?>
                           </span>
                         </td>
+                        <td><?= date('d/m/Y H:i', strtotime($com['fecha_publicacion'])) ?></td>
                         <td>
                           <span class="badge badge-<?= $com['estado'] === 'Activo' ? 'success' : 'danger' ?>">
                             <?= htmlspecialchars($com['estado']) ?>
@@ -240,7 +242,7 @@ include __DIR__ . '/../layout/header.php';
                     <div class="row">
                       <div class="col-md-8">
                         <h5 class="fw-bold mb-1"><?= htmlspecialchars($com['tipo']) ?></h5>
-                        <p class="text-muted mb-0"><?= substr(htmlspecialchars($com['contenido']), 0, 150) ?>...</p>
+                        <p class="text-muted mb-0"><?= substr(htmlspecialchars($com['contenido']), 0, 150) ?></p>
                       </div>
                       <div class="col-md-4 text-end">
                         <small class="text-muted d-block mb-2">

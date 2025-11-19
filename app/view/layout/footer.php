@@ -36,7 +36,12 @@
     <script src="../../public/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
     <script src="../../public/assets/js/kaiadmin.min.js"></script>
     <script src="../../public/assets/js/demo.js"></script>
-    
+
+
+    <script src="../../public/assets/js/extra.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
     <script>
         // Sparklines para el dashboard
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {

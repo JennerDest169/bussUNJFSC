@@ -15,7 +15,6 @@ class ComunicadoController {
 
     // Listar comunicados
     public function index() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -39,7 +38,6 @@ class ComunicadoController {
 
     // Mostrar formulario de creación
     public function nuevo() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -58,7 +56,6 @@ class ComunicadoController {
 
     // Crear comunicado
     public function guardar() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -112,7 +109,6 @@ class ComunicadoController {
 
     // Ver detalle del comunicado
     public function ver() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -138,7 +134,6 @@ class ComunicadoController {
 
     // Editar comunicado
     public function editar() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -171,7 +166,6 @@ class ComunicadoController {
 
     // Actualizar comunicado
     public function actualizar() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -207,7 +201,6 @@ class ComunicadoController {
 
     // Eliminar comunicado
     public function eliminar() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');
@@ -239,7 +232,6 @@ class ComunicadoController {
 
     // Cambiar estado (activar/desactivar)
     public function cambiarEstado() {
-        session_start();
 
         if(!isset($_SESSION['logueado'])) {
             header('Location: index.php?controller=Auth&action=login');

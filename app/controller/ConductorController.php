@@ -7,7 +7,7 @@ class ConductorController {
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->conn = $db->connect();
     }
 
     public function listar() {
@@ -33,10 +33,10 @@ class ConductorController {
                   VALUES (:nombre, :apellido, :dni, :telefono, :bus_asignado)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':nombre', $conductor->nombre);
-        $stmt->bindParam(':apellido', $conductor->apellido);
+        //$stmt->bindParam(':apellido', $conductor->apellido);
         $stmt->bindParam(':dni', $conductor->dni);
         $stmt->bindParam(':telefono', $conductor->telefono);
-        $stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
+        //$stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
         return $stmt->execute();
     }
 
@@ -47,10 +47,10 @@ class ConductorController {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $conductor->id);
         $stmt->bindParam(':nombre', $conductor->nombre);
-        $stmt->bindParam(':apellido', $conductor->apellido);
+        //$stmt->bindParam(':apellido', $conductor->apellido);
         $stmt->bindParam(':dni', $conductor->dni);
         $stmt->bindParam(':telefono', $conductor->telefono);
-        $stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
+        //$stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
         return $stmt->execute();
     }
 
