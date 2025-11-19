@@ -18,23 +18,27 @@ class RastreoGPSController {
         include __DIR__ . '/../view/rastreogps/index.php';
     }
 
-    // PARA CONDUCTORES: Enviar su ubicación
     public function actualizarUbicacion() {
-        if (!isset($_SESSION['logueado'])) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'No autorizado']);
-            exit;
-        }
+    // ⭐⭐ INICIAR SESIÓN si no está iniciada
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (!isset($_SESSION['logueado'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'No autorizado']);
+        exit;
+    }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = json_decode(file_get_contents('php://input'), true);
-            
-            $latitud = $data['latitud'] ?? null;
-            $longitud = $data['longitud'] ?? null;
-            $conductor_id = $_SESSION['usuario_id'] ?? null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        $latitud = $data['latitud'] ?? null;
+        $longitud = $data['longitud'] ?? null;
+        $conductor_id = $data['conductor_id'] ?? null;
 
-            if ($latitud && $longitud && $conductor_id) {
-                // INSERT OR UPDATE - Si existe el conductor, actualiza; si no, inserta
+        if ($latitud && $longitud && $conductor_id) {
+            try {
                 $query = "INSERT INTO ubicaciones_buses (conductor_id, latitud, longitud, fecha_actualizacion) 
                           VALUES (:conductor_id, :latitud, :longitud, NOW()) 
                           ON DUPLICATE KEY UPDATE 
@@ -50,12 +54,21 @@ class RastreoGPSController {
 
                 header('Content-Type: application/json');
                 echo json_encode(['success' => true, 'timestamp' => time()]);
-            } else {
+                
+            } catch (Exception $e) {
+                // ⭐⭐ AGREGAR manejo de errores
                 header('Content-Type: application/json');
-                echo json_encode(['error' => 'Datos incompletos']);
+                echo json_encode(['error' => 'Error en base de datos: ' . $e->getMessage()]);
             }
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Datos incompletos']);
         }
     }
+    
+    // ⭐⭐ AGREGAR exit al final
+    exit;
+}
 
     // PARA USUARIOS: Obtener todas las ubicaciones activas
     public function obtenerUbicaciones() {

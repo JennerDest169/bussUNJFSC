@@ -85,7 +85,7 @@ $esConductor = ($_SESSION['tipo_usuario'] ?? '') === 'conductor';
         </div>
 
         <!-- Panel para conductor -->
-        <?php if ($esConductor): ?>
+        <?php if ($_SESSION['rol'] ?? ''): ?>
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="card card-round card-warning">
@@ -183,12 +183,6 @@ $esConductor = ($_SESSION['tipo_usuario'] ?? '') === 'conductor';
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-console.log('🔍 DEBUG: Script cargando...');
-console.log('Botón existe:', document.getElementById('btnIniciarRastreo'));
-console.log('Función existe:', typeof iniciarRastreoConductor);
-
-// Verificar si es conductor
-console.log('Es conductor:', <?= ($_SESSION['rol'] ?? '') ? 'true' : 'false' ?>);
 // Variables globales
 let map;
 let markers = {};
@@ -558,6 +552,13 @@ function actualizarUIConductor(activo) {
     const btnDetener = document.getElementById('btnDetenerRastreo');
     const estadoRastreo = document.getElementById('estadoRastreo');
     const badgeEstado = document.getElementById('badgeEstado');
+    const ultimaUbicacion = document.getElementById('ultimaUbicacion');
+
+    // ✅ VERIFICAR que los elementos existan antes de usarlos
+    if (!btnIniciar || !btnDetener || !estadoRastreo || !badgeEstado || !ultimaUbicacion) {
+        console.error('❌ Elementos del UI no encontrados');
+        return;
+    }
 
     if (activo) {
         btnIniciar.style.display = 'none';
@@ -571,7 +572,7 @@ function actualizarUIConductor(activo) {
         estadoRastreo.textContent = 'Rastreo detenido - No se comparte ubicación';
         badgeEstado.textContent = 'Inactivo';
         badgeEstado.className = 'badge badge-warning';
-        document.getElementById('ultimaUbicacion').textContent = 'Última ubicación: No disponible';
+        ultimaUbicacion.textContent = 'Última ubicación: No disponible';
     }
 }
 
@@ -582,6 +583,10 @@ function actualizarUltimaUbicacion(lat, lng) {
 
 async function enviarUbicacionConductor(lat, lng) {
     try {
+        const conductor_id = <?= $_SESSION['usuario_id'] ?? 'null' ?>;
+        
+        console.log('📍 Enviando ubicación:', { lat, lng, conductor_id });
+
         const response = await fetch('index.php?controller=RastreoGPS&action=actualizarUbicacion', {
             method: 'POST',
             headers: {
@@ -589,7 +594,8 @@ async function enviarUbicacionConductor(lat, lng) {
             },
             body: JSON.stringify({
                 latitud: lat,
-                longitud: lng
+                longitud: lng,
+                conductor_id: conductor_id
             })
         });
 

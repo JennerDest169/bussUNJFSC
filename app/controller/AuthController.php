@@ -23,6 +23,7 @@ class AuthController {
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
                 $_SESSION['rol'] = $resultado['rol'];//almacenar rol
+                $_SESSION['usuario_id'] = $resultado['id'];//almacenar id usuario
 
                 header("Location: index.php?controller=Dashboard&action=index"); //redireccion
                 exit;
