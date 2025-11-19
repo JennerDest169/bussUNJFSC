@@ -8,6 +8,7 @@ class ConductorController {
     public function __construct() {
         $db = new Database();
         $this->conn = $db->connect();
+        $this->conn = $db->connect();
     }
 
     public function listar() {

@@ -19,7 +19,6 @@ class AuthController {
             
             if ($resultado !== false) {
                 // Login exitoso
-                session_start();
                 $_SESSION['usuario'] = $resultado;
                 $_SESSION['logueado'] = true;
                 $_SESSION['rol'] = $resultado['rol'];//almacenar rol
@@ -29,7 +28,6 @@ class AuthController {
                 exit;
             } else {
                 // Login fallido
-                session_start();
                 $_SESSION['error'] = "Credenciales incorrectas";
                 header("Location: index.php?controller=Auth&action=login");
                 exit;

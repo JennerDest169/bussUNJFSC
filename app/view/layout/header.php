@@ -30,7 +30,12 @@
     <link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/kaiadmin.min.css" />
-    
+    <link rel="stylesheet" href="../../../public/assets/css/demo.css" />
+
+    <link rel="stylesheet" href="../../../public/assets/css/extra.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 </head>
@@ -113,16 +118,23 @@
                                 <p>Usuarios</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                         <!-- INCIDENCIAS con badge de notificación -->
+                        <li class="nav-item" id="nav-incidencias">
                             <a class="dropdown-item" href="index.php?controller=Incidencia&action=index">
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <p>Incidencias</p>
+                                <!-- Badge de notificación (se muestra dinámicamente) -->
+                                <span class="notification-badge incidencias" id="badge-incidencias" style="display: none;">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+
+                        <!-- COMUNICADOS con badge de notificación -->
+                        <li class="nav-item" id="nav-comunicados">
                             <a class="dropdown-item" href="index.php?controller=Comunicado&action=index">
                                 <i class="fa fa-comment" aria-hidden="true"></i>
                                 <p>Comunicados</p>
+                                <!-- Badge de notificación (se muestra dinámicamente) -->
+                                <span class="notification-badge comunicados" id="badge-comunicados" style="display: none;">0</span>
                             </a>
                         </li>
                     </ul>
