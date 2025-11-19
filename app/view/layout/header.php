@@ -30,7 +30,6 @@
     <link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="../../../public/assets/css/demo.css" />
 
     <link rel="stylesheet" href="../../../public/assets/css/extra.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
