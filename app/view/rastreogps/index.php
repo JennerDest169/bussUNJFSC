@@ -28,12 +28,14 @@ $esConductor = ($_SESSION['tipo_usuario'] ?? '') === 'conductor';
         z-index: 1000;
         max-width: 300px;
     }
-    .bus-marker {
-        background: #007bff;
-        border: 3px solid white;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
+    .bus-icon-active {
+    background: transparent !important;
+    border: none !important;
+    }
+
+    .bus-icon-inactive {
+    background: transparent !important;
+    border: none !important;
     }
     .conductor-active {
         background: #28a745;
@@ -194,15 +196,39 @@ const esConductor = <?= ($_SESSION['rol'] ?? '') ? 'true' : 'false'; ?>;
 
 // Iconos personalizados
 const busIcon = L.divIcon({
-    className: 'bus-marker conductor-active',
-    html: '<div style="width: 100%; height: 100%; border-radius: 50%;"></div>',
-    iconSize: [20, 20],
-    iconAnchor: [10, 10]
+    className: 'bus-icon-active',
+    html: `
+        <div style="
+            width: 24px; 
+            height: 24px; 
+            background: #007bff; 
+            border: 3px solid white; 
+            border-radius: 50%; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 10px;
+        ">🚌</div>
+    `,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
 });
 
 const inactiveBusIcon = L.divIcon({
-    className: 'bus-marker conductor-inactive',
-    html: '<div style="width: 100%; height: 100%; border-radius: 50%;"></div>',
+    className: 'bus-icon-inactive',
+    html: `
+        <div style="
+            width: 20px; 
+            height: 20px; 
+            background: #6c757d; 
+            border: 2px solid white; 
+            border-radius: 50%; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        "></div>
+    `,
     iconSize: [20, 20],
     iconAnchor: [10, 10]
 });
@@ -308,13 +334,16 @@ async function cargarUbicaciones() {
     }
 }
 
-// Actualizar marcadores en el mapa
+// Actualizar marcadores en el mapa (FIJOS)
 function actualizarMarcadores(ubicaciones) {
-    // Limpiar marcadores antiguos
-    Object.values(markers).forEach(marker => {
-        if (marker.remove) marker.remove();
+    // Limpiar solo marcadores que ya no existen
+    Object.keys(markers).forEach(conductorId => {
+        const existe = ubicaciones.some(u => u.conductor_id == conductorId);
+        if (!existe && markers[conductorId]) {
+            markers[conductorId].remove();
+            delete markers[conductorId];
+        }
     });
-    markers = {};
 
     if (ubicaciones.length === 0) {
         mostrarMensaje('No hay buses activos en este momento', 'info');
@@ -330,44 +359,51 @@ function actualizarMarcadores(ubicaciones) {
         const diferenciaMinutos = Math.floor((ahora - fechaActualizacion) / (1000 * 60));
         const esActivo = diferenciaMinutos <= 5;
 
-        // Crear marcador
-        const marker = L.marker(position, {
-            icon: esActivo ? busIcon : inactiveBusIcon
-        }).addTo(map);
+        // Si el marcador ya existe, ACTUALIZAR su posición
+        if (markers[ubicacion.conductor_id]) {
+            markers[ubicacion.conductor_id].setLatLng(position);
+            markers[ubicacion.conductor_id].setIcon(esActivo ? busIcon : inactiveBusIcon);
+        } else {
+            // Crear NUEVO marcador
+            const marker = L.marker(position, {
+                icon: esActivo ? busIcon : inactiveBusIcon
+            }).addTo(map);
 
-        // Popup de información
-        const popupContent = `
-            <div style="min-width: 200px;">
-                <h6 class="fw-bold text-primary mb-2">${ubicacion.conductor_nombre || 'Conductor'}</h6>
-                <div class="mb-2">
-                    <span class="badge badge-success">${ubicacion.placa || 'No asignado'}</span>
-                    <span class="badge badge-info">${ubicacion.modelo || 'N/A'}</span>
+            // Popup de información
+            const popupContent = `
+                <div style="min-width: 200px;">
+                    <h6 class="fw-bold text-primary mb-2">${ubicacion.conductor_nombre || 'Conductor'}</h6>
+                    <div class="mb-2">
+                        <span class="badge badge-success">${ubicacion.placa || 'No asignado'}</span>
+                        <span class="badge badge-info">${ubicacion.modelo || 'N/A'}</span>
+                    </div>
+                    <p class="mb-1 small">
+                        <i class="fas fa-clock text-muted"></i> 
+                        ${fechaActualizacion.toLocaleTimeString()}
+                    </p>
+                    <p class="mb-0 small text-muted">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        ${position[0].toFixed(6)}, ${position[1].toFixed(6)}
+                    </p>
+                    <p class="mb-0 small mt-1">
+                        Estado: <span class="badge ${esActivo ? 'badge-success' : 'badge-warning'}">
+                            ${esActivo ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </p>
                 </div>
-                <p class="mb-1 small">
-                    <i class="fas fa-clock text-muted"></i> 
-                    ${fechaActualizacion.toLocaleTimeString()}
-                </p>
-                <p class="mb-0 small text-muted">
-                    <i class="fas fa-map-marker-alt"></i> 
-                    ${position[0].toFixed(6)}, ${position[1].toFixed(6)}
-                </p>
-                <p class="mb-0 small mt-1">
-                    Estado: <span class="badge ${esActivo ? 'badge-success' : 'badge-warning'}">
-                        ${esActivo ? 'Activo' : 'Inactivo'}
-                    </span>
-                </p>
-            </div>
-        `;
+            `;
 
-        marker.bindPopup(popupContent);
-
-        // Guardar referencia
-        markers[ubicacion.conductor_id] = marker;
+            marker.bindPopup(popupContent);
+            markers[ubicacion.conductor_id] = marker;
+        }
     });
 
-    // Ajustar vista del mapa
-    if (ubicaciones.length > 0) {
-        setTimeout(() => centrarMapaEnBuses(), 500);
+    // Ajustar vista del mapa SOLO si es la primera carga
+    if (Object.keys(markers).length > 0 && !map.hasInitialFit) {
+        setTimeout(() => {
+            centrarMapaEnBuses();
+            map.hasInitialFit = true; // Marcar que ya se ajustó
+        }, 500);
     }
 }
 

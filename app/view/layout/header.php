@@ -100,7 +100,7 @@
                             </a>
                         </li>
                         <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
-                            <a href="index.php?controller=Conductor&action=listar">
+                            <a href="index.php?controller=Conductor&action=index">
                                 <i class="fas fa-user-tie"></i>
                                 <p>Conductores</p>
                             </a>

@@ -443,7 +443,7 @@ $(document).ready(function () {
 // Navegación con teclado
 document.addEventListener("keydown", function (e) {
   const lightbox = document.getElementById("lightbox");
-  if (lightbox.classList.contains("active")) {
+  if (lightbox && lightbox.classList.contains("active")) {
     if (e.key === "Escape") {
       lightbox.classList.remove("active");
       document.body.style.overflow = "auto";
@@ -695,7 +695,7 @@ $(document).ready(function () {
     const vigencia = fechaVigenciaFieldEdit.val();
 
     // Actualizar título
-    if (titulo.trim()) {
+    if (titulo && titulo.trim()) {
       $("#previewTituloEdit").html(titulo);
     } else {
       $("#previewTituloEdit").html('<em class="text-muted">Sin título</em>');
@@ -735,7 +735,7 @@ $(document).ready(function () {
     }
 
     // Actualizar contenido
-    if (contenido.trim()) {
+    if (contenido && contenido.trim()) {
       $("#previewContenidoEdit").html(contenido.replace(/\n/g, "<br>"));
     } else {
       $("#previewContenidoEdit").html(

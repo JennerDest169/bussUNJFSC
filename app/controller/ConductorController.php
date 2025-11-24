@@ -8,10 +8,9 @@ class ConductorController {
     public function __construct() {
         $db = new Database();
         $this->conn = $db->connect();
-        $this->conn = $db->connect();
     }
 
-    public function listar() {
+    public function index() {
 
         if (!isset($_SESSION['logueado'])) {
             header("Location: index.php?controller=Auth&action=login");
@@ -57,8 +56,8 @@ class ConductorController {
             $stmt->bindParam(':fecha_registro', $conductor->fecha_registro);
             $stmt->execute();
 
-            $conductores = $this->listar();
-            include __DIR__ . '/../view/conductor/index.php';
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
         } else {
             header("Location: index.php?controller=Conductor&action=index");
             exit;
@@ -96,8 +95,8 @@ class ConductorController {
             $stmt->bindParam(':estado', $conductor->estado);
             $stmt->execute();
 
-            $conductores = $this->listar();
-            include __DIR__ . '/../view/conductor/index.php';
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
         } else {
             header("Location: index.php?controller=Conductor&action=index");
             exit;
@@ -120,8 +119,8 @@ class ConductorController {
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $conductores = $this->listar();
-            include __DIR__ . '/../view/conductor/index.php';
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
         } else {
             header("Location: index.php?controller=Conductor&action=index");
             exit;
