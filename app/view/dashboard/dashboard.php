@@ -177,14 +177,8 @@ include __DIR__ . '/../layout/header.php';
                         <div class="card-head-row card-tools-still-right">
                             <h4 class="card-title">Distribución de Rutas</h4>
                             <div class="card-tools">
-                                <button class="btn btn-icon btn-link btn-primary btn-xs">
-                                    <span class="fa fa-angle-down"></span>
-                                </button>
                                 <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card">
                                     <span class="fa fa-sync-alt"></span>
-                                </button>
-                                <button class="btn btn-icon btn-link btn-primary btn-xs">
-                                    <span class="fa fa-times"></span>
                                 </button>
                             </div>
                         </div>
@@ -198,56 +192,23 @@ include __DIR__ . '/../layout/header.php';
                                 <div class="table-responsive table-hover table-sales">
                                     <table class="table">
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <i class="fas fa-route text-primary fa-2x"></i>
-                                                    </div>
-                                                </td>
-                                                <td>Ruta Centro</td>
-                                                <td class="text-end">8</td>
-                                                <td class="text-end">42.18%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <i class="fas fa-route text-success fa-2x"></i>
-                                                    </div>
-                                                </td>
-                                                <td>Ruta Norte</td>
-                                                <td class="text-end">6</td>
-                                                <td class="text-end">24.36%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <i class="fas fa-route text-warning fa-2x"></i>
-                                                    </div>
-                                                </td>
-                                                <td>Ruta Sur</td>
-                                                <td class="text-end">4</td>
-                                                <td class="text-end">18.16%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <i class="fas fa-route text-info fa-2x"></i>
-                                                    </div>
-                                                </td>
-                                                <td>Ruta Este</td>
-                                                <td class="text-end">3</td>
-                                                <td class="text-end">12.65%</td>
-                                            </tr>
+                                            <?php
+                                                foreach($distribucionRutas as $dis)
+                                                {
+                                            ?>
                                             <tr>
                                                 <td>
                                                     <div class="flag">
                                                         <i class="fas fa-route text-danger fa-2x"></i>
                                                     </div>
                                                 </td>
-                                                <td>Ruta Oeste</td>
-                                                <td class="text-end">3</td>
-                                                <td class="text-end">12.65%</td>
+                                                <td><?php echo htmlspecialchars($dis['nombre']) ?></td>
+                                                <td class="text-end"><?php echo htmlspecialchars($dis['cantidad_buses']) ?></td>
+                                                <td class="text-end">100%</td>
                                             </tr>
+                                            <?php
+                                                }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -276,80 +237,32 @@ include __DIR__ . '/../layout/header.php';
                     <div class="card-body">
                         <div class="card-head-row card-tools-still-right">
                             <div class="card-title">Conductores Activos</div>
-                            <div class="card-tools">
-                                <div class="dropdown">
-                                    <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Ver Todos</a>
-                                        <a class="dropdown-item" href="#">Agregar Nuevo</a>
-                                        <a class="dropdown-item" href="#">Exportar</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="card-list py-4">
-                            <div class="item-list">
-                                <div class="avatar">
-                                    <img src="/BUSS/public/assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-                                <div class="info-user ms-3">
-                                    <div class="username">Juan Pérez</div>
-                                    <div class="status">Ruta Centro</div>
-                                </div>
-                                <button class="btn btn-icon btn-link op-8 me-1">
-                                    <i class="far fa-envelope"></i>
-                                </button>
-                                <button class="btn btn-icon btn-link btn-primary op-8">
-                                    <i class="fas fa-phone"></i>
-                                </button>
-                            </div>
-                            <div class="item-list">
-                                <div class="avatar">
-                                    <span class="avatar-title rounded-circle border border-white bg-success">MG</span>
-                                </div>
-                                <div class="info-user ms-3">
-                                    <div class="username">María Gómez</div>
-                                    <div class="status">Ruta Norte</div>
-                                </div>
-                                <button class="btn btn-icon btn-link op-8 me-1">
-                                    <i class="far fa-envelope"></i>
-                                </button>
-                                <button class="btn btn-icon btn-link btn-primary op-8">
-                                    <i class="fas fa-phone"></i>
-                                </button>
-                            </div>
-                            <div class="item-list">
-                                <div class="avatar">
-                                    <img src="/BUSS/public/assets/img/talha.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-                                <div class="info-user ms-3">
-                                    <div class="username">Carlos López</div>
-                                    <div class="status">Ruta Sur</div>
-                                </div>
-                                <button class="btn btn-icon btn-link op-8 me-1">
-                                    <i class="far fa-envelope"></i>
-                                </button>
-                                <button class="btn btn-icon btn-link btn-primary op-8">
-                                    <i class="fas fa-phone"></i>
-                                </button>
-                            </div>
-                            <div class="item-list">
-                                <div class="avatar">
-                                    <img src="/BUSS/public/assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle">
-                                </div>
-                                <div class="info-user ms-3">
-                                    <div class="username">Roberto Díaz</div>
-                                    <div class="status">Ruta Este</div>
-                                </div>
-                                <button class="btn btn-icon btn-link op-8 me-1">
-                                    <i class="far fa-envelope"></i>
-                                </button>
-                                <button class="btn btn-icon btn-link btn-primary op-8">
-                                    <i class="fas fa-phone"></i>
-                                </button>
-                            </div>
+                            <?php 
+                                foreach ($conductoresActivos as $conductor) {
+                            ?>
+                                    <div class="item-list">
+                                        <div class="avatar">
+                                            <span class="avatar-title rounded-circle border border-white bg-success">CA</span>
+                                        </div>
+                                        <div class="info-user ms-3">
+                                            <div class="username"><?php echo htmlspecialchars($conductor['nombre']); ?></div>
+                                            <div class="status"><?php echo $conductor['ruta'] ? htmlspecialchars($conductor['ruta']) : 'Sin ruta asignada'; ?></div>
+                                        </div>
+                                        <button class="btn btn-icon btn-link op-8 me-1">
+                                            <i class="far fa-envelope"></i>
+                                        </button>
+                                        <button class="btn btn-icon btn-link btn-primary op-8">
+                                            <i class="fas fa-phone"></i>
+                                        </button>
+                                    </div>
+                            <?php 
+                                }
+                                if (empty($conductoresActivos)) {
+                                    echo '<p class="text-center text-muted">No hay conductores disponibles en este momento.</p>';
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -359,18 +272,6 @@ include __DIR__ . '/../layout/header.php';
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
                             <div class="card-title">Asignaciones Recientes</div>
-                            <div class="card-tools">
-                                <div class="dropdown">
-                                    <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Ver Todas</a>
-                                        <a class="dropdown-item" href="#">Nueva Asignación</a>
-                                        <a class="dropdown-item" href="#">Exportar</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -385,58 +286,25 @@ include __DIR__ . '/../layout/header.php';
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php 
+                                        foreach ($asignacionesRecientes as $activo) {
+                                    ?>
                                     <tr>
                                         <th scope="row">
                                             <button class="btn btn-icon btn-round btn-success btn-sm me-2">
                                                 <i class="fa fa-check"></i>
                                             </button>
-                                            Ruta #A-001
+                                            <?php echo htmlspecialchars($activo['ruta']) ?>
                                         </th>
-                                        <td class="text-end"><?= date('d M Y, H:i') ?></td>
-                                        <td class="text-end">TST-001</td>
+                                        <td class="text-end"><?php echo htmlspecialchars($activo['fecha_asignacion']) ?></td>
+                                        <td class="text-end"><?php echo htmlspecialchars($activo['bus']) ?></td>
                                         <td class="text-end">
-                                            <span class="badge badge-success">En Curso</span>
+                                            <span class="badge badge-success"><?php echo htmlspecialchars($activo['estado']) ?></span>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                                                <i class="fa fa-check"></i>
-                                            </button>
-                                            Ruta #B-002
-                                        </th>
-                                        <td class="text-end"><?= date('d M Y, H:i', strtotime('-1 hour')) ?></td>
-                                        <td class="text-end">TST-002</td>
-                                        <td class="text-end">
-                                            <span class="badge badge-success">En Curso</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <button class="btn btn-icon btn-round btn-warning btn-sm me-2">
-                                                <i class="fa fa-clock"></i>
-                                            </button>
-                                            Ruta #C-003
-                                        </th>
-                                        <td class="text-end"><?= date('d M Y, H:i', strtotime('-2 hours')) ?></td>
-                                        <td class="text-end">TST-003</td>
-                                        <td class="text-end">
-                                            <span class="badge badge-warning">Programado</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <button class="btn btn-icon btn-round btn-info btn-sm me-2">
-                                                <i class="fa fa-sync"></i>
-                                            </button>
-                                            Ruta #D-004
-                                        </th>
-                                        <td class="text-end"><?= date('d M Y, H:i', strtotime('-3 hours')) ?></td>
-                                        <td class="text-end">TST-004</td>
-                                        <td class="text-end">
-                                            <span class="badge badge-info">En Espera</span>
-                                        </td>
-                                    </tr>
+                                    <?php 
+                                        }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
