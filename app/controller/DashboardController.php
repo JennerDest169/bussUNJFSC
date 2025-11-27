@@ -52,7 +52,10 @@ class DashboardController {
         
         // Asignaciones recientes
         $stats['asignacionesRecientes'] = $this->obtenerAsignacionesRecientes();
-        
+
+        // obtener la grafica de los viajes completados en los ultimos 5 dias
+        $stats['ultimo5Dias'] = $this->contarTodosLosViajesDeLos5UltimosDias();
+
         return $stats;
     }
 
@@ -105,6 +108,21 @@ class DashboardController {
         $stmt->execute([$hoy]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
+    }
+
+    private function contarTodosLosViajesDeLos5UltimosDias(){
+        $query = "SELECT 
+                DATE(fecha_asignacion) as fecha, 
+                COUNT(*) as total 
+              FROM asignaciones 
+              WHERE DATE(fecha_asignacion) >= DATE_SUB(CURDATE(), INTERVAL 4 DAY)
+                AND estado = 'Completado'
+              GROUP BY DATE(fecha_asignacion)
+              ORDER BY fecha ASC";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function obtenerDistribucionRutas() {

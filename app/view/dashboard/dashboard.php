@@ -2,7 +2,7 @@
 $title = "Dashboard - Sistema de Buses UNJFSC";
 include __DIR__ . '/../layout/header.php'; 
 ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <div class="container-fluir">
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
@@ -132,18 +132,6 @@ include __DIR__ . '/../layout/header.php';
                     <div class="card-header">
                         <div class="card-head-row">
                             <div class="card-title">Viajes del Día</div>
-                            <div class="card-tools">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-label-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Hoy
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Hoy</a>
-                                        <a class="dropdown-item" href="#">Ayer</a>
-                                        <a class="dropdown-item" href="#">Esta Semana</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="card-category"><?= date('d M Y') ?></div>
                     </div>
@@ -158,12 +146,9 @@ include __DIR__ . '/../layout/header.php';
                 </div>
                 <div class="card card-round">
                     <div class="card-body pb-0">
-                        <div class="h1 fw-bold float-end text-primary">+8%</div>
+                        <div class="h1 fw-bold float-end text-primary">+69%</div>
                         <h2 class="mb-2"><?= $busesEnRuta ?? '8' ?></h2>
                         <p class="text-muted">Buses en ruta</p>
-                        <div class="pull-in sparkline-fix">
-                            <div id="lineChart"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -176,11 +161,6 @@ include __DIR__ . '/../layout/header.php';
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
                             <h4 class="card-title">Distribución de Rutas</h4>
-                            <div class="card-tools">
-                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card">
-                                    <span class="fa fa-sync-alt"></span>
-                                </button>
-                            </div>
                         </div>
                         <p class="card-category">
                             Mapa de las rutas activas en el sistema
@@ -313,6 +293,91 @@ include __DIR__ . '/../layout/header.php';
             </div>
         </div>
     </div>
+                                    
+    <script>
+        <?php
+            $fechas = [];
+            $viajes = [];
+        
+            foreach($ultimo5Dias as $row) {
+                $fechas[] = $row['fecha'];
+                $viajes[] = $row['total'];
+            }
+        
+        ?>
+
+    console.log(<?php echo json_encode($fechas); ?>)
+    const ctx = document.getElementById('dailySalesChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($fechas); ?>,
+                datasets: [{
+                    label: 'Viajes Diarios',
+                    data: <?php echo json_encode($viajes); ?>,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Cantidad de Viajes por Día',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + ' viajes';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5,
+                            callback: function(value) {
+                                return value;
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Número de Viajes',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fecha',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </div>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>
