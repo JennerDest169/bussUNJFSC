@@ -119,26 +119,34 @@ include __DIR__ . '/../layout/header.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="route-info-panel" id="routeInfoPanel" style="display: none;">
-                            <h6 id="currentRouteName" class="fw-bold text-primary mb-2"></h6>
-                            <div class="route-stats mb-2">
-                                <div class="row text-center">
-                                    <div class="col-6">
-                                        <span class="badge badge-warning" id="currentRouteDistance">
-                                            <i class="bi bi-signpost me-1"></i>-- km
-                                        </span>
-                                    </div>
-                                    <div class="col-6">
-                                        <span class="badge badge-warning" id="currentRouteDuration">
-                                            <i class="bi bi-clock me-1"></i>-- min
-                                        </span>
+                        <div class="mt-3" id="routeInfoPanel" style="display: none;">
+                            <div class="card">
+                                <div class="card-body p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h6 id="currentRouteName" class="fw-bold text-primary mb-1"></h6>
+                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                <small><strong><i class="bi bi-geo-alt-fill text-primary"></i> Origen:</strong> <span id="currentRouteOrigin"></span></small>
+                                                <small><strong><i class="bi bi-geo-alt text-success"></i> Destino:</strong> <span id="currentRouteDestiny"></span></small>
+                                                <small><strong><i class="bi bi-clock"></i> Horario:</strong> <span id="currentRouteSchedule"></span></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row text-center">
+                                                <div class="col-6">
+                                                    <span class="badge bg-success mb-1" id="currentRouteDistance">
+                                                        <i class="bi bi-signpost me-1"></i><br><small>-- km</small>
+                                                    </span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <span class="badge bg-info mb-1" id="currentRouteDuration">
+                                                        <i class="bi bi-clock me-1"></i><br><small>-- min</small>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mt-2">
-                                <small><strong>Origen:</strong> <span id="currentRouteOrigin"></span></small><br>
-                                <small><strong>Destino:</strong> <span id="currentRouteDestiny"></span></small><br>
-                                <small><strong>Horario:</strong> <span id="currentRouteSchedule"></span></small>
                             </div>
                         </div>
                     </div>
@@ -149,79 +157,97 @@ include __DIR__ . '/../layout/header.php';
 
     <!-- Cards de Rutas -->
     <div class="row">
-        <?php if (!empty($rutas)): ?>
-            <?php foreach ($rutas as $ruta): ?>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card route-card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5 class="card-title fw-bold text-primary"><?= htmlspecialchars($ruta['nombre']) ?></h5>
-                                <span class="badge <?= $ruta['estado'] === 'Activa' ? 'badge-success' : 'badge-danger' ?> status-badge">
-                                    <?= htmlspecialchars($ruta['estado']) ?>
-                                </span>
+    <?php if (!empty($rutas)): ?>
+        <?php foreach ($rutas as $ruta): ?>
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-route text-primary me-2"></i>
+                                <?= htmlspecialchars($ruta['nombre']) ?>
+                            </h5>
+                            <span class="badge <?= $ruta['estado'] === 'Activa' ? 'bg-success' : 'bg-danger' ?>">
+                                <?= htmlspecialchars($ruta['estado']) ?>
+                            </span>
+                        </div>
+                        
+                        <!-- Información básica -->
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3 text-primary">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="small text-muted">Origen</div>
+                                    <div class="fw-semibold"><?= htmlspecialchars($ruta['origen']) ?></div>
+                                </div>
                             </div>
                             
-                            <!-- Ruta visual -->
-                            <div class="route-path">
-                                <div class="d-flex align-items-center justify-content-between text-center">
-                                    <div class="flex-fill">
-                                        <i class="bi bi-geo-alt-fill text-primary"></i>
-                                        <small class="d-block fw-bold mt-1"><?= htmlspecialchars($ruta['origen']) ?></small>
-                                    </div>
-                                    <div class="path-arrow">
-                                        <i class="bi bi-arrow-right"></i>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <i class="bi bi-geo-alt text-success"></i>
-                                        <small class="d-block fw-bold mt-1"><?= htmlspecialchars($ruta['destino']) ?></small>
-                                    </div>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 text-success">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="small text-muted">Destino</div>
+                                    <div class="fw-semibold"><?= htmlspecialchars($ruta['destino']) ?></div>
                                 </div>
                             </div>
-
-                            <!-- Horarios -->
-                            <div class="row text-center mb-3">
-                                <div class="col-6">
-                                    <span class="badge badge-primary time-badge">
-                                        <i class="bi bi-clock me-1"></i>
-                                        <?= htmlspecialchars($ruta['hora_salida']) ?>
-                                    </span>
-                                    <small class="d-block text-muted mt-1">Salida</small>
-                                </div>
-                                <div class="col-6">
-                                    <span class="badge badge-success time-badge">
-                                        <i class="bi bi-clock-fill me-1"></i>
-                                        <?= htmlspecialchars($ruta['hora_llegada']) ?>
-                                    </span>
-                                    <small class="d-block text-muted mt-1">Llegada</small>
-                                </div>
-                            </div>
-
-                            <!-- Información adicional -->
-                            <?php if (!empty($ruta['descripcion'])): ?>
-                                <div class="d-flex align-items-center text-muted">
-                                    <i class="bi bi-signpost me-2"></i>
-                                    <small><strong>Descripción:</strong> <?= htmlspecialchars($ruta['descripcion']) ?></small>
-                                </div>
-                            <?php endif; ?>
                         </div>
-                        <div class="card-footer bg-transparent p-2">
-                            <div class="btn-group w-100" role="group">
-                                <button type="button" class="btn btn-info btn-sm" 
-                                        onclick="mostrarRutaEnMapa(
-                                            <?= $ruta['id'] ?>, 
-                                            '<?= $ruta['nombre'] ?>', 
-                                            '<?= $ruta['origen'] ?>', 
-                                            '<?= $ruta['destino'] ?>', 
-                                            '<?= $ruta['hora_salida'] ?>', 
-                                            '<?= $ruta['hora_llegada'] ?>',
-                                            <?= $ruta['lat_origen'] ?? -10.75 ?>, 
-                                            <?= $ruta['lng_origen'] ?? -77.76 ?>, 
-                                            <?= $ruta['lat_destino'] ?? -10.74 ?>, 
-                                            <?= $ruta['lng_destino'] ?? -77.76 ?>
-                                        )">
-                                    <i class="bi bi-eye"></i> Ver
-                                </button>
-                                <button type="button" class="btn btn-warning btn-sm" 
+                        
+                        <!-- Horarios -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="small text-muted">Salida</div>
+                                <div class="fw-semibold">
+                                    <i class="bi bi-clock text-primary me-1"></i>
+                                    <?= htmlspecialchars($ruta['hora_salida']) ?>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="small text-muted">Llegada</div>
+                                <div class="fw-semibold">
+                                    <i class="bi bi-clock-fill text-success me-1"></i>
+                                    <?= htmlspecialchars($ruta['hora_llegada']) ?>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Descripción (si existe) -->
+                        <?php if (!empty($ruta['descripcion'])): ?>
+                            <div class="mb-3">
+                                <div class="small text-muted">Descripción</div>
+                                <div class="small"><?= htmlspecialchars($ruta['descripcion']) ?></div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <!-- Fecha de creación (similar a usuarios) -->
+                        <div class="small text-muted mt-2">
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <?= date('d/m/Y', strtotime($ruta['fecha_creacion'] ?? 'now')) ?>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0 pt-0">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                    onclick="mostrarRutaEnMapa(
+                                        <?= $ruta['id'] ?>, 
+                                        '<?= $ruta['nombre'] ?>', 
+                                        '<?= $ruta['origen'] ?>', 
+                                        '<?= $ruta['destino'] ?>', 
+                                        '<?= $ruta['hora_salida'] ?>', 
+                                        '<?= $ruta['hora_llegada'] ?>',
+                                        <?= $ruta['lat_origen'] ?? -10.75 ?>, 
+                                        <?= $ruta['lng_origen'] ?? -77.76 ?>, 
+                                        <?= $ruta['lat_destino'] ?? -10.74 ?>, 
+                                        <?= $ruta['lng_destino'] ?? -77.76 ?>
+                                    )">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </button>
+                            
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-warning" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#editarRutaModal"
                                         onclick="cargarDatosEditarRuta(
@@ -240,33 +266,35 @@ include __DIR__ . '/../layout/header.php';
                                         )">
                                     <i class="bi bi-pencil"></i> Editar
                                 </button>
+                                
                                 <?php if ($ruta['estado'] != 'Suspendida'): ?>
                                     <a href="index.php?controller=Ruta&action=eliminar&id=<?= $ruta['id'] ?>" 
-                                       class="btn btn-danger btn-sm" 
+                                       class="btn btn-sm btn-outline-danger" 
                                        onclick="return confirm('¿Seguro que deseas eliminar esta ruta?');">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body text-center py-5">
-                        <i class="bi bi-route fa-4x text-muted mb-3"></i>
-                        <h4 class="text-muted">No hay rutas registradas</h4>
-                        <p class="text-muted">Comience agregando una nueva ruta al sistema.</p>
-                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#crearRutaModal">
-                            <i class="bi bi-plus-circle me-2"></i>Agregar Primera Ruta
-                        </button>
-                    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-route fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay rutas registradas</h4>
+                    <p class="text-muted">Comience agregando una nueva ruta al sistema.</p>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#crearRutaModal">
+                        <i class="bi bi-plus-circle me-2"></i>Agregar Primera Ruta
+                    </button>
                 </div>
             </div>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
+</div>
 </div>
 
 <!-- Modales (mantener igual que antes) -->
