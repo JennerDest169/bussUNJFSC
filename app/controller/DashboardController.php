@@ -23,6 +23,18 @@ class DashboardController {
         include __DIR__ . '/../view/dashboard/dashboard.php';
     }
 
+    public function obtenerDatosGrafica() {
+        header('Content-Type: application/json');
+        
+        $mes = isset($_POST['mes']) ? (int)$_POST['mes'] : date('n');
+        $ano = isset($_POST['ano']) ? (int)$_POST['ano'] : date('Y');
+        
+        $datos = $this->obtenerNumeroDeViajesPorRutaEnMes($mes, $ano);
+        
+        echo json_encode($datos);
+        exit;
+    }
+
     private function obtenerEstadisticas() {
         $stats = [];
         
@@ -52,7 +64,13 @@ class DashboardController {
         
         // Asignaciones recientes
         $stats['asignacionesRecientes'] = $this->obtenerAsignacionesRecientes();
-        
+
+        // obtener la grafica de los viajes completados en los ultimos 5 dias
+        $stats['ultimo5Dias'] = $this->contarTodosLosViajesDeLos5UltimosDias();
+
+        //como paso aki las variables
+        $stats['graficaPrincipal'] = $this->obtenerNumeroDeViajesPorRutaEnMes(date('n'), date('Y'));
+
         return $stats;
     }
 
@@ -107,6 +125,21 @@ class DashboardController {
         return $result['total'];
     }
 
+    private function contarTodosLosViajesDeLos5UltimosDias(){
+        $query = "SELECT 
+                DATE(fecha_asignacion) as fecha, 
+                COUNT(*) as total 
+              FROM asignaciones 
+              WHERE DATE(fecha_asignacion) >= DATE_SUB(CURDATE(), INTERVAL 4 DAY)
+                AND estado = 'Completado'
+              GROUP BY DATE(fecha_asignacion)
+              ORDER BY fecha ASC";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     private function obtenerDistribucionRutas() {
         $query = "
             SELECT r.nombre, COUNT(a.id) as cantidad_buses
@@ -152,6 +185,25 @@ class DashboardController {
         ";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function obtenerNumeroDeViajesPorRutaEnMes($mes, $ano){
+        $query = "
+            SELECT 
+                r.id,
+                r.nombre,
+                COUNT(v.id) as total_viajes,
+                DATE_FORMAT(v.fecha_asignacion, '%Y-%m') as periodo
+            FROM asignaciones v
+            INNER JOIN rutas r ON v.ruta_id = r.id
+            WHERE MONTH(v.fecha_asignacion) = ? 
+            AND YEAR(v.fecha_asignacion) = ?
+            GROUP BY r.id, r.nombre, DATE_FORMAT(v.fecha_asignacion, '%Y-%m')
+            ORDER BY total_viajes DESC
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$mes, $ano]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
