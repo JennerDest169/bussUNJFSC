@@ -79,13 +79,24 @@ class UsuarioController {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST['id'] ?? '';
             $nombre = $_POST['nombre'] ?? '';
+            $rol = $_POST['rol2'] ?? '';
             $estado = $_POST['estado'] ?? '';
-            
 
             $usuario = new Usuario();
             $resultado = $usuario->update($estado, $nombre, $id);
             
             if ($resultado) {
+                if($rol == 'Conductor'){
+                    $esta = 'Inactivo';
+                    if($estado == 'Activo'){
+                        $esta = 'Disponible';
+                    }
+                    $query = "UPDATE conductores SET estado = :estado WHERE id_usuarios = :id";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(':estado', $esta);
+                    $stmt->bindParam(':id', $id);
+                    $stmt->execute();
+                }
                 $_SESSION['exito'] = "Usuario editado exitosamente";
                 header("Location: index.php?controller=Usuario&action=index");
                 exit;

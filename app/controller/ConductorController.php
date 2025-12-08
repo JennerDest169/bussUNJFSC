@@ -17,10 +17,9 @@ class ConductorController {
             exit;
         }
 
-        $query = "SELECT c.*, b.placa AS bus_placa
+        $query = "SELECT c.*, u.nombre as nombre, u.correo as correo
                   FROM conductores c
-                  LEFT JOIN asignaciones a ON a.conductor_id = c.id
-                  LEFT JOIN buses b ON a.bus_id = b.id";
+                  LEFT JOIN usuarios u ON u.id = c.id_usuarios";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $conductores = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -74,22 +73,17 @@ class ConductorController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conductor = new Conductor();
             $conductor->id = $_POST['id'];
-            $conductor->nombre = $_POST['nombre'];
             $conductor->dni = $_POST['dni'];
-            $conductor->correo = $_POST['correo'];
             $conductor->telefono = $_POST['telefono'];
             $conductor->licencia = $_POST['licencia'];
             $conductor->estado = $_POST['estado'];
 
             $query = "UPDATE conductores 
-                      SET nombre = :nombre, dni = :dni, correo = :correo, 
-                          telefono = :telefono, licencia = :licencia, estado = :estado
+                      SET dni = :dni, telefono = :telefono, licencia = :licencia, estado = :estado
                       WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $conductor->id);
-            $stmt->bindParam(':nombre', $conductor->nombre);
             $stmt->bindParam(':dni', $conductor->dni);
-            $stmt->bindParam(':correo', $conductor->correo);
             $stmt->bindParam(':telefono', $conductor->telefono);
             $stmt->bindParam(':licencia', $conductor->licencia);
             $stmt->bindParam(':estado', $conductor->estado);

@@ -91,6 +91,20 @@ class Usuario {
         return $stmt->execute();
     }
 
+    //actualizar el estado de conductor
+    public function updateConductor($id, $estado){
+        $esta = 'Inactivo';
+        if($estado == 'Activo'){
+            $esta = 'Disponible';
+        }
+        $query = "UPDATE conductores SET estado = :estado WHERE id_usuarios = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':estado', $esta);
+        $stmt->bindParam(':id', $id);
+        
+        return $stmt->execute();
+    }
+
     //eliminacion logica del usuario
     public function delete($id) {
 

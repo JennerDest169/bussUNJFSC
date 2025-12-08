@@ -16,17 +16,22 @@ if (!empty($conductores)) {
 ?>
 
 <div class="page-inner">
-    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-        <div>
-            <h3 class="fw-bold mb-3">Gestión de Conductores</h3>
-            <h6 class="op-7 mb-2">Administre los conductores del sistema de transporte</h6>
-        </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <button type="button" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#crearConductorModal">
-                <i class="bi bi-person-plus me-2"></i>Nuevo Conductor
-            </button>
-        </div>
-    </div>
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">Conductores</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Conductores</a>
+          </li>
+        </ul>
+      </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -38,7 +43,7 @@ if (!empty($conductores)) {
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="display table table-striped table-hover">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -47,9 +52,20 @@ if (!empty($conductores)) {
                                     <th>Teléfono</th>
                                     <th>Licencia</th>
                                     <th>Estado</th>
-                                    <th class="text-center">Acciones</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>DNI</th>
+                                    <th>Teléfono</th>
+                                    <th>Licencia</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </tfoot>
                             <tbody>
                                 <?php if (!empty($conductoresUnicos)): ?>
                                     <?php foreach ($conductoresUnicos as $conductor): ?>
@@ -185,7 +201,7 @@ if (!empty($conductores)) {
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editar_nombre" class="form-label">Nombre Completo *</label>
-                        <input type="text" class="form-control" id="editar_nombre" name="nombre" required>
+                        <input type="text" disabled class="form-control" id="editar_nombre" name="nombre" required>
                     </div>
                     <div class="mb-3">
                         <label for="editar_dni" class="form-label">DNI *</label>
@@ -197,7 +213,7 @@ if (!empty($conductores)) {
                     </div>
                     <div class="mb-3">
                         <label for="editar_correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="editar_correo" name="correo">
+                        <input type="email" disabled class="form-control" id="editar_correo" name="correo">
                     </div>
                     <div class="mb-3">
                         <label for="editar_licencia" class="form-label">Licencia *</label>

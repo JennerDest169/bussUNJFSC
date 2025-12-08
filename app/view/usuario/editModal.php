@@ -12,17 +12,18 @@
                         <label for="edit_nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="edit_nombre" name="nombre" required>
                     </div>
-                    <!--div class="mb-3">
+                    <div class="mb-3">
                         <label for="edit_rol" class="form-label">
                             Rol
                         </label>
-                        <select id="edit_rol" name="rol" class="form-control" required>
+                        <select id="edit_rol" name="rol" class="form-control" required disabled>
                             <option value="">-- Seleccione un rol --</option>
                             <option value="Estudiante" selected>👨‍🎓 Estudiante</option>
                             <option value="Conductor">🚌 Conductor</option>
                             <option value="Administrador">👨‍💼 Administrador</option>
                         </select>
-                    </div-->
+                        <input type="hidden" name="rol2" id="edit_rol_hidden">
+                    </div>
                     <div class="mb-3">
                         <label for="edit_estado" class="form-label">
                             Estado

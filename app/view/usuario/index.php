@@ -141,6 +141,7 @@ include __DIR__ . '/../layout/header.php';
         document.getElementById('edit_id').value = this.dataset.id;
         document.getElementById('edit_nombre').value = this.dataset.nombre;
         document.getElementById('edit_rol').value = this.dataset.rol;
+        document.getElementById('edit_rol_hidden').value = this.dataset.rol; // <── SOLUCIÓN
         document.getElementById('edit_estado').value = this.dataset.estado;
       });
     });
