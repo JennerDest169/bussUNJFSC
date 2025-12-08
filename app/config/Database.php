@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "localhost";
-    private $db_name = "transporte_unjfsc";
-    private $username = "root";
-    private $password = "";
+    private $host = "172.17.0.3";
+    private $db_name = "sigtu_db";
+    private $username = "renzo";
+    private $password = "renzo";
     private $port = "3306"; // Agregar puerto
     private $conn;
     

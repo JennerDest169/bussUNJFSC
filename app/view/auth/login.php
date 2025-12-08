@@ -195,9 +195,9 @@ unset($_SESSION['error'], $_SESSION['exito']);
             <button type="submit">Ingresar</button>
         </form>
         
-        <div class="register-link">
+        <!--div class="register-link">
             ¿No tienes cuenta? <a href="index.php?controller=Auth&action=registro">Regístrate aquí</a>
-        </div>
+        </div-->
     </div>
 </body>
 </html>

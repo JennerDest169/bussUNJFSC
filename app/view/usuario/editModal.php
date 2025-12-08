@@ -12,7 +12,7 @@
                         <label for="edit_nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="edit_nombre" name="nombre" required>
                     </div>
-                    <div class="mb-3">
+                    <!--div class="mb-3">
                         <label for="edit_rol" class="form-label">
                             Rol
                         </label>
@@ -22,7 +22,7 @@
                             <option value="Conductor">🚌 Conductor</option>
                             <option value="Administrador">👨‍💼 Administrador</option>
                         </select>
-                    </div>
+                    </div-->
                     <div class="mb-3">
                         <label for="edit_estado" class="form-label">
                             Estado

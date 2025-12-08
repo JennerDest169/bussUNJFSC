@@ -54,6 +54,16 @@ class Usuario {
         
         return $stmt->execute();
     }
+
+    //obtener el ultimo usuario ingresado el id
+    public function LastUserId(){
+        $query = "SELECT id FROM " . $this->table . " ORDER BY id DESC LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['id'] : null; 
+    }
     
     // Verificar si un correo ya existe
     public function emailExists($correo) {
@@ -66,17 +76,16 @@ class Usuario {
     }
 
     // Actualizar usuario
-    public function update($estado, $nombre, $rol, $id) {
+    public function update($estado, $nombre, $id) {
         if ($this->emailExists($correo)) {
             return false; // El correo ya está registrado
         }
 
-        $query = "UPDATE " . $this->table . " SET nombre = :nombre, rol = :rol, estado = :estado WHERE id = :id";
+        $query = "UPDATE " . $this->table . " SET nombre = :nombre, estado = :estado WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':estado', $estado);
         $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':rol', $rol);
         $stmt->bindParam(':id', $id);
         
         return $stmt->execute();
