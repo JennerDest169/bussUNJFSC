@@ -862,3 +862,89 @@ SISTEMA DE NOTIFICACIONES EN TIEMPO REAL
             });
         });
     });
+
+
+
+    // ============================================
+// LIGHTBOX PARA GALERÍA DE IMÁGENES
+// ============================================
+let currentImageIndex = 0;
+let totalImages = 0;
+
+function openLightbox(index) {
+  const lightbox = document.getElementById("lightbox");
+  const images = document.querySelectorAll(".imagen-item img");
+  
+  if (!lightbox || images.length === 0) {
+    console.error("No se encontró el lightbox o no hay imágenes");
+    return;
+  }
+  
+  totalImages = images.length;
+  currentImageIndex = index;
+  
+  // Actualizar la imagen en el lightbox
+  updateLightboxImage(images[currentImageIndex]);
+  
+  // Mostrar el lightbox
+  lightbox.classList.add("active");
+  document.body.style.overflow = "hidden";
+  
+  // Actualizar contador
+  document.getElementById("current-image").textContent = currentImageIndex + 1;
+  document.getElementById("total-images").textContent = totalImages;
+}
+
+function closeLightbox(event) {
+  if (event) event.stopPropagation();
+  
+  const lightbox = document.getElementById("lightbox");
+  if (!lightbox) return;
+  
+  lightbox.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
+
+function nextImage(event) {
+  if (event) event.stopPropagation();
+  
+  const images = document.querySelectorAll(".imagen-item img");
+  if (images.length === 0) return;
+  
+  currentImageIndex = (currentImageIndex + 1) % totalImages;
+  updateLightboxImage(images[currentImageIndex]);
+  document.getElementById("current-image").textContent = currentImageIndex + 1;
+}
+
+function prevImage(event) {
+  if (event) event.stopPropagation();
+  
+  const images = document.querySelectorAll(".imagen-item img");
+  if (images.length === 0) return;
+  
+  currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+  updateLightboxImage(images[currentImageIndex]);
+  document.getElementById("current-image").textContent = currentImageIndex + 1;
+}
+
+function updateLightboxImage(img) {
+  const lightboxImg = document.getElementById("lightbox-img");
+  if (!lightboxImg || !img) return;
+  
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+}
+
+// Navegación con teclado
+document.addEventListener("keydown", function (e) {
+  const lightbox = document.getElementById("lightbox");
+  if (lightbox && lightbox.classList.contains("active")) {
+    if (e.key === "Escape") {
+      closeLightbox(e);
+    } else if (e.key === "ArrowRight") {
+      nextImage(e);
+    } else if (e.key === "ArrowLeft") {
+      prevImage(e);
+    }
+  }
+});
