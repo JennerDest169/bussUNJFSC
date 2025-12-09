@@ -794,78 +794,76 @@ $(document).ready(function () {
 /* ============================================
 SISTEMA DE NOTIFICACIONES EN TIEMPO REAL
  ============================================ */
-    $(document).ready(function() {
-        // Función para actualizar el conteo de notificaciones
-        function actualizarNotificaciones() {
-            $.ajax({
-                url: 'index.php?controller=Notificacion&action=obtenerConteo',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    // Actualizar badge de incidencias (solo para administradores)
-                    if (data.incidencias_nuevas !== undefined) {
-                        const badgeIncidencias = $('#badge-incidencias');
-                        if (data.incidencias_nuevas > 0) {
-                            badgeIncidencias.text(data.incidencias_nuevas).show();
-                        } else {
-                            badgeIncidencias.hide();
-                        }
-                    }
-
-                    // Actualizar badge de comunicados
-                    if (data.comunicados_nuevos !== undefined) {
-                        const badgeComunicados = $('#badge-comunicados');
-                        if (data.comunicados_nuevos > 0) {
-                            badgeComunicados.text(data.comunicados_nuevos).show();
-                        } else {
-                            badgeComunicados.hide();
-                        }
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al obtener notificaciones:', error);
-                }
-            });
+$(document).ready(function () {
+  // Función para actualizar el conteo de notificaciones
+  function actualizarNotificaciones() {
+    $.ajax({
+      url: "index.php?controller=Notificacion&action=obtenerConteo",
+      method: "GET",
+      dataType: "json",
+      success: function (data) {
+        // Actualizar badge de incidencias (solo para administradores)
+        if (data.incidencias_nuevas !== undefined) {
+          const badgeIncidencias = $("#badge-incidencias");
+          if (data.incidencias_nuevas > 0) {
+            badgeIncidencias.text(data.incidencias_nuevas).show();
+          } else {
+            badgeIncidencias.hide();
+          }
         }
 
-        // Actualizar inmediatamente al cargar la página
-        actualizarNotificaciones();
-
-        // Actualizar cada 5 segundos (5000 ms)
-        setInterval(actualizarNotificaciones, 5000);
-
-        // Marcar como visto cuando el usuario hace clic en Incidencias
-        $('#nav-incidencias a').on('click', function() {
-            $.ajax({
-                url: 'index.php?controller=Notificacion&action=marcarComoVisto',
-                method: 'POST',
-                data: { tipo: 'incidencia' },
-                dataType: 'json',
-                success: function(data) {
-                    // Ocultar el badge inmediatamente
-                    $('#badge-incidencias').hide();
-                }
-            });
-        });
-
-        // Marcar como visto cuando el usuario hace clic en Comunicados
-        $('#nav-comunicados a').on('click', function() {
-            $.ajax({
-                url: 'index.php?controller=Notificacion&action=marcarComoVisto',
-                method: 'POST',
-                data: { tipo: 'comunicado' },
-                dataType: 'json',
-                success: function(data) {
-                    // Ocultar el badge inmediatamente
-                    $('#badge-comunicados').hide();
-                }
-            });
-        });
+        // Actualizar badge de comunicados
+        if (data.comunicados_nuevos !== undefined) {
+          const badgeComunicados = $("#badge-comunicados");
+          if (data.comunicados_nuevos > 0) {
+            badgeComunicados.text(data.comunicados_nuevos).show();
+          } else {
+            badgeComunicados.hide();
+          }
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error al obtener notificaciones:", error);
+      },
     });
+  }
 
+  // Actualizar inmediatamente al cargar la página
+  actualizarNotificaciones();
 
+  // Actualizar cada 5 segundos (5000 ms)
+  setInterval(actualizarNotificaciones, 5000);
 
-    // ============================================
+  // Marcar como visto cuando el usuario hace clic en Incidencias
+  $("#nav-incidencias a").on("click", function () {
+    $.ajax({
+      url: "index.php?controller=Notificacion&action=marcarComoVisto",
+      method: "POST",
+      data: { tipo: "incidencia" },
+      dataType: "json",
+      success: function (data) {
+        // Ocultar el badge inmediatamente
+        $("#badge-incidencias").hide();
+      },
+    });
+  });
+
+  // Marcar como visto cuando el usuario hace clic en Comunicados
+  $("#nav-comunicados a").on("click", function () {
+    $.ajax({
+      url: "index.php?controller=Notificacion&action=marcarComoVisto",
+      method: "POST",
+      data: { tipo: "comunicado" },
+      dataType: "json",
+      success: function (data) {
+        // Ocultar el badge inmediatamente
+        $("#badge-comunicados").hide();
+      },
+    });
+  });
+});
+
+// ============================================
 // LIGHTBOX PARA GALERÍA DE IMÁGENES
 // ============================================
 let currentImageIndex = 0;
@@ -874,22 +872,22 @@ let totalImages = 0;
 function openLightbox(index) {
   const lightbox = document.getElementById("lightbox");
   const images = document.querySelectorAll(".imagen-item img");
-  
+
   if (!lightbox || images.length === 0) {
     console.error("No se encontró el lightbox o no hay imágenes");
     return;
   }
-  
+
   totalImages = images.length;
   currentImageIndex = index;
-  
+
   // Actualizar la imagen en el lightbox
   updateLightboxImage(images[currentImageIndex]);
-  
+
   // Mostrar el lightbox
   lightbox.classList.add("active");
   document.body.style.overflow = "hidden";
-  
+
   // Actualizar contador
   document.getElementById("current-image").textContent = currentImageIndex + 1;
   document.getElementById("total-images").textContent = totalImages;
@@ -897,20 +895,20 @@ function openLightbox(index) {
 
 function closeLightbox(event) {
   if (event) event.stopPropagation();
-  
+
   const lightbox = document.getElementById("lightbox");
   if (!lightbox) return;
-  
+
   lightbox.classList.remove("active");
   document.body.style.overflow = "auto";
 }
 
 function nextImage(event) {
   if (event) event.stopPropagation();
-  
+
   const images = document.querySelectorAll(".imagen-item img");
   if (images.length === 0) return;
-  
+
   currentImageIndex = (currentImageIndex + 1) % totalImages;
   updateLightboxImage(images[currentImageIndex]);
   document.getElementById("current-image").textContent = currentImageIndex + 1;
@@ -918,10 +916,10 @@ function nextImage(event) {
 
 function prevImage(event) {
   if (event) event.stopPropagation();
-  
+
   const images = document.querySelectorAll(".imagen-item img");
   if (images.length === 0) return;
-  
+
   currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
   updateLightboxImage(images[currentImageIndex]);
   document.getElementById("current-image").textContent = currentImageIndex + 1;
@@ -930,7 +928,7 @@ function prevImage(event) {
 function updateLightboxImage(img) {
   const lightboxImg = document.getElementById("lightbox-img");
   if (!lightboxImg || !img) return;
-  
+
   lightboxImg.src = img.src;
   lightboxImg.alt = img.alt;
 }
@@ -948,3 +946,29 @@ document.addEventListener("keydown", function (e) {
     }
   }
 });
+
+// ============================================
+// BOTONES DEL DASHBOARD
+// ============================================
+function toggleInfo(collapseId, button) {
+  const element = document.getElementById(collapseId);
+  const textSpan = button.querySelector(".toggle-text");
+
+  if (element.classList.contains("show")) {
+    element.classList.remove("show");
+    textSpan.textContent = "Más...";
+  } else {
+    // Cerrar todos los demás collapses abiertos
+    document.querySelectorAll(".collapse.show").forEach((el) => {
+      el.classList.remove("show");
+    });
+    // Resetear todos los botones
+    document.querySelectorAll(".toggle-text").forEach((span) => {
+      span.textContent = "Más...";
+    });
+
+    // Abrir el seleccionado
+    element.classList.add("show");
+    textSpan.textContent = "Menos";
+  }
+}
