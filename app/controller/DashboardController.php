@@ -156,12 +156,13 @@ class DashboardController {
 
     private function obtenerConductoresActivos() {
         $query = "
-            SELECT c.id, c.nombre, r.nombre as ruta
+            SELECT c.id, u.nombre, r.nombre as ruta
             FROM conductores c
             LEFT JOIN asignaciones a ON c.id = a.conductor_id AND a.estado = 'En ruta'
+            LEFT JOIN usuarios u ON u.id = c.id_usuarios
             LEFT JOIN rutas r ON a.ruta_id = r.id
             WHERE c.estado = 'Disponible'
-            ORDER BY c.nombre
+            ORDER BY u.nombre
             LIMIT 4
         ";
         $stmt = $this->conn->prepare($query);
