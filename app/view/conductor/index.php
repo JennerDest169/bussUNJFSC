@@ -1,32 +1,49 @@
 <?php 
 $title = "Gestión de Conductores";
 include __DIR__ . '/../layout/header.php'; 
+
+// Verificar y limpiar datos duplicados
+$conductoresUnicos = [];
+$idsVistos = [];
+if (!empty($conductores)) {
+    foreach ($conductores as $conductor) {
+        if (!in_array($conductor['id'], $idsVistos)) {
+            $idsVistos[] = $conductor['id'];
+            $conductoresUnicos[] = $conductor;
+        }
+    }
+}
 ?>
 
 <div class="page-inner">
-    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-        <div>
-            <h3 class="fw-bold mb-3">Gestión de Conductores</h3>
-            <h6 class="op-7 mb-2">Administre los conductores del sistema de transporte</h6>
-        </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <button type="button" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#crearConductorModal">
-                <i class="bi bi-person-plus me-2"></i>Nuevo Conductor
-            </button>
-        </div>
-    </div>
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">Conductores</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Conductores</a>
+          </li>
+        </ul>
+      </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-head-row">
                         <div class="card-title">Lista de Conductores</div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-head-bg-primary table-bordered-bd-primary">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -35,12 +52,23 @@ include __DIR__ . '/../layout/header.php';
                                     <th>Teléfono</th>
                                     <th>Licencia</th>
                                     <th>Estado</th>
-                                    <th class="text-center">Acciones</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>DNI</th>
+                                    <th>Teléfono</th>
+                                    <th>Licencia</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </tfoot>
                             <tbody>
-                                <?php if (!empty($conductores)): ?>
-                                    <?php foreach ($conductores as $conductor): ?>
+                                <?php if (!empty($conductoresUnicos)): ?>
+                                    <?php foreach ($conductoresUnicos as $conductor): ?>
                                         <tr>
                                             <td><?= htmlspecialchars($conductor['id']) ?></td>
                                             <td>
@@ -54,7 +82,7 @@ include __DIR__ . '/../layout/header.php';
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="badge <?= $conductor['estado'] === 'Disponible' ? 'badge-success' : 'badge-danger' ?>">
+                                                <span class="badge <?= $conductor['estado'] === 'Disponible' ? 'badge-success' : ($conductor['estado'] === 'En ruta' ? 'badge-warning' : 'badge-danger') ?>">
                                                     <?= htmlspecialchars($conductor['estado']) ?>
                                                 </span>
                                             </td>
@@ -65,9 +93,10 @@ include __DIR__ . '/../layout/header.php';
                                                             data-bs-target="#editarConductorModal"
                                                             onclick="cargarDatosEditarConductor(
                                                                 <?= $conductor['id'] ?>, 
-                                                                '<?= $conductor['nombre'] ?>', 
+                                                                '<?= addslashes($conductor['nombre']) ?>', 
                                                                 '<?= $conductor['dni'] ?>', 
-                                                                '<?= $conductor['telefono'] ?>', 
+                                                                '<?= $conductor['telefono'] ?>',
+                                                                '<?= $conductor['correo'] ?>',
                                                                 '<?= $conductor['licencia'] ?>', 
                                                                 '<?= $conductor['estado'] ?>'
                                                             )">
@@ -82,7 +111,6 @@ include __DIR__ . '/../layout/header.php';
                                                                 </a>';
                                                         }
                                                     ?>
-                                                    
                                                 </div>
                                             </td>
                                         </tr>
@@ -133,7 +161,7 @@ include __DIR__ . '/../layout/header.php';
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="emaul" class="form-control" id="correo" name="correo">
+                        <input type="email" class="form-control" id="correo" name="correo">
                     </div>
                     <div class="mb-3">
                         <label for="licencia" class="form-label">Licencia *</label>
@@ -144,7 +172,7 @@ include __DIR__ . '/../layout/header.php';
                         <select class="form-select" id="estado" name="estado" required>
                             <option value="Disponible">Disponible</option>
                             <option value="En ruta">En ruta</option>
-                            <option value="Inactivo">Licencia</option>
+                            <option value="Inactivo">Inactivo</option>
                             <option value="Licencia">Licencia</option>
                         </select>
                     </div>
@@ -173,7 +201,7 @@ include __DIR__ . '/../layout/header.php';
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editar_nombre" class="form-label">Nombre Completo *</label>
-                        <input type="text" class="form-control" id="editar_nombre" name="nombre" required>
+                        <input type="text" disabled class="form-control" id="editar_nombre" name="nombre" required>
                     </div>
                     <div class="mb-3">
                         <label for="editar_dni" class="form-label">DNI *</label>
@@ -184,8 +212,8 @@ include __DIR__ . '/../layout/header.php';
                         <input type="tel" class="form-control" id="editar_telefono" name="telefono">
                     </div>
                     <div class="mb-3">
-                        <label for="correo" class="form-label">Correo</label>
-                        <input type="emaul" class="form-control" id="correo" name="correo">
+                        <label for="editar_correo" class="form-label">Correo</label>
+                        <input type="email" disabled class="form-control" id="editar_correo" name="correo">
                     </div>
                     <div class="mb-3">
                         <label for="editar_licencia" class="form-label">Licencia *</label>
@@ -196,7 +224,7 @@ include __DIR__ . '/../layout/header.php';
                         <select class="form-select" id="editar_estado" name="estado" required>
                             <option value="Disponible">Disponible</option>
                             <option value="En ruta">En ruta</option>
-                            <option value="Inactivo">Licencia</option>
+                            <option value="Inactivo">Inactivo</option>
                             <option value="Licencia">Licencia</option>
                         </select>
                     </div>
@@ -211,11 +239,12 @@ include __DIR__ . '/../layout/header.php';
 </div>
 
 <script>
-function cargarDatosEditarConductor(id, nombre, dni, telefono, licencia, estado) {
+function cargarDatosEditarConductor(id, nombre, dni, telefono, correo, licencia, estado) {
     document.getElementById('editar_id').value = id;
     document.getElementById('editar_nombre').value = nombre;
     document.getElementById('editar_dni').value = dni;
     document.getElementById('editar_telefono').value = telefono;
+    document.getElementById('editar_correo').value = correo;
     document.getElementById('editar_licencia').value = licencia;
     document.getElementById('editar_estado').value = estado;
 }

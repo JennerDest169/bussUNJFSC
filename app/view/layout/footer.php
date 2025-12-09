@@ -35,7 +35,6 @@
     <script src="../../public/assets/js/plugin/chart.js/chart.min.js"></script>
     <script src="../../public/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
     <script src="../../public/assets/js/kaiadmin.min.js"></script>
-    <script src="../../public/assets/js/demo.js"></script>
 
 
     <script src="../../public/assets/js/extra.js"></script>

@@ -17,62 +17,95 @@ include __DIR__ . '/../layout/header.php';
     </div>
 
     <div class="row">
-        <?php if (!empty($buses)): ?>
-            <?php foreach ($buses as $bus): ?>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card bus-card h-100" style="border-left: 4px solid #1e3c72;">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5 class="card-title fw-bold text-primary"><?= htmlspecialchars($bus['placa']) ?></h5>
-                                <span class="badge <?= $bus['estado'] === 'Activo' ? 'badge-success' : 'badge-danger' ?>">
-                                    <?= htmlspecialchars($bus['estado']) ?>
-                                </span>
-                            </div>
-                            <p class="card-text">
-                                <i class="bi bi-car-front me-2 text-muted"></i>
-                                <?= htmlspecialchars($bus['modelo']) ?>
-                            </p>
-                            <p class="card-text">
-                                <i class="bi bi-people me-2 text-muted"></i>
-                                Capacidad: <?= htmlspecialchars($bus['capacidad']) ?> pasajeros
-                            </p>
+    <?php if (!empty($buses)): ?>
+        <?php foreach ($buses as $bus): ?>
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-bus-front text-primary me-2"></i>
+                                <?= htmlspecialchars($bus['placa']) ?>
+                            </h5>
+                            <span class="badge <?= $bus['estado'] === 'Activo' ? 'bg-success' : 'bg-danger' ?>">
+                                <?= htmlspecialchars($bus['estado']) ?>
+                            </span>
                         </div>
-                        <div class="card-footer bg-transparent">
-                            <div class="btn-group w-100" role="group">
-                                <button type="button" class="btn btn-warning btn-sm" 
+                        
+                        <!-- Información del bus -->
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3 text-muted">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="small text-muted">Modelo</div>
+                                    <div class="fw-semibold"><?= htmlspecialchars($bus['modelo']) ?></div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 text-muted">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="small text-muted">Capacidad</div>
+                                    <div class="fw-semibold"><?= htmlspecialchars($bus['capacidad']) ?> pasajeros</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fecha de registro (si existe) -->
+                        <?php if (!empty($bus['fecha_registro'])): ?>
+                            <div class="small text-muted mt-2">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                <?= date('d/m/Y', strtotime($bus['fecha_registro'])) ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0 pt-0">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-muted small">
+                                ID: <?= $bus['id'] ?>
+                            </div>
+                            
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-warning" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#editarBusModal"
                                         onclick="cargarDatosEditar(<?= $bus['id'] ?>, '<?= $bus['placa'] ?>', '<?= $bus['modelo'] ?>', <?= $bus['capacidad'] ?>, '<?= $bus['estado'] ?>')">
                                     <i class="bi bi-pencil"></i> Editar
                                 </button>
-                                <?php
-                                    if ($bus['estado'] != 'Inactivo') {
-                                        echo '<a href="index.php?controller=Bus&action=eliminar&id=' . $bus['id'] . '" 
-                                            class="btn btn-danger btn-sm" 
-                                            onclick="return confirm(\'¿Seguro que deseas eliminar este bus?\');">
-                                            <i class="bi bi-trash"></i> Eliminar </a>';
-                                    }
-                                ?>
+                                
+                                <?php if ($bus['estado'] != 'Inactivo'): ?>
+                                    <a href="index.php?controller=Bus&action=eliminar&id=<?= $bus['id'] ?>" 
+                                       class="btn btn-sm btn-outline-danger" 
+                                       onclick="return confirm('¿Seguro que deseas eliminar este bus?');">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body text-center py-5">
-                        <i class="bi bi-bus-front fa-4x text-muted mb-3"></i>
-                        <h4 class="text-muted">No hay buses registrados</h4>
-                        <p class="text-muted">Comience agregando un nuevo bus al sistema.</p>
-                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#crearBusModal">
-                            <i class="bi bi-plus-circle me-2"></i>Agregar Primer Bus
-                        </button>
-                    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-bus-front fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay buses registrados</h4>
+                    <p class="text-muted">Comience agregando un nuevo bus al sistema.</p>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#crearBusModal">
+                        <i class="bi bi-plus-circle me-2"></i>Agregar Primer Bus
+                    </button>
                 </div>
             </div>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
+</div>
 </div>
 
 <!-- Modal para Crear Bus -->

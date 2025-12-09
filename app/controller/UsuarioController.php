@@ -1,8 +1,15 @@
 <?php
+require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../model/Usuario.php';
 
 class UsuarioController {
-    
+    private $conn;
+
+    public function __construct() {
+        $db = new Database();
+        $this->conn = $db->connect();
+    }
+
     // Listar todos los usuarios
     public function index() {
         // Verificar que esté logueado
@@ -30,10 +37,28 @@ class UsuarioController {
             $password = $_POST['password'] ?? '';
             $nombre = $_POST['nombre'] ?? '';
             $rol = $_POST['rol'] ?? '';
+            //para conductor si es su rol
+            $dni = $_POST['dni'] ?? '';
+            $telefono = $_POST['telefono'] ?? '';
+            $licencia = $_POST['licencia'] ?? '';
+            $estado = 'Disponible';
 
             $usuario = new Usuario();
             $resultado = $usuario->create($correo, $password, $nombre, $rol);
+
             if ($resultado) {
+                $id = $usuario->LastUserId();
+                if($rol == 'Conductor' && !empty($dni) && !empty($telefono) && !empty($licencia)){
+                    $query = "INSERT INTO conductores (dni, telefono, licencia, estado, id_usuarios)
+                      VALUES (:dni, :telefono, :licencia, :estado, :usuario )";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(':dni', $dni);
+                    $stmt->bindParam(':telefono', $telefono);
+                    $stmt->bindParam(':licencia', $licencia);
+                    $stmt->bindParam(':estado', $estado);
+                    $stmt->bindParam(':usuario', $id);
+                    $stmt->execute();
+                }
                 $_SESSION['exito'] = "Usuario registrado exitosamente";
                 header("Location: index.php?controller=Usuario&action=index");
                 exit;
@@ -54,14 +79,24 @@ class UsuarioController {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST['id'] ?? '';
             $nombre = $_POST['nombre'] ?? '';
-            $rol = $_POST['rol'] ?? '';
+            $rol = $_POST['rol2'] ?? '';
             $estado = $_POST['estado'] ?? '';
-            
 
             $usuario = new Usuario();
-            $resultado = $usuario->update($estado, $nombre, $rol, $id);
+            $resultado = $usuario->update($estado, $nombre, $id);
             
             if ($resultado) {
+                if($rol == 'Conductor'){
+                    $esta = 'Inactivo';
+                    if($estado == 'Activo'){
+                        $esta = 'Disponible';
+                    }
+                    $query = "UPDATE conductores SET estado = :estado WHERE id_usuarios = :id";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(':estado', $esta);
+                    $stmt->bindParam(':id', $id);
+                    $stmt->execute();
+                }
                 $_SESSION['exito'] = "Usuario editado exitosamente";
                 header("Location: index.php?controller=Usuario&action=index");
                 exit;
