@@ -121,6 +121,12 @@
                 <p>Rutas</p>
             </a>
         </li>
+        <li class="nav-item <?= $is_asignaciones ? 'active' : '' ?>">
+            <a href="index.php?controller=Asignaciones&action=index">
+                <i class="fas fa-clipboard-list"></i>
+                <p>Asignaciones</p>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="dropdown-item" href="index.php?controller=Usuario&action=index">
                 <i class="fas fa-user"></i>
