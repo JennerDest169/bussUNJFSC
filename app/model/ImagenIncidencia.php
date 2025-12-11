@@ -6,7 +6,7 @@ class ImagenIncidencia {
     public $id;
     public $incidencia_id;
     public $nombre_archivo;
-    public $imagen_blob; // ⭐ Cambiado de ruta_archivo a imagen_blob
+    public $imagen_blob;
     public $tipo_mime;
     public $tamano;
     public $fecha_subida;
@@ -25,7 +25,7 @@ class ImagenIncidencia {
         
         $stmt->bindParam(':incidencia_id', $this->incidencia_id);
         $stmt->bindParam(':nombre_archivo', $this->nombre_archivo);
-        $stmt->bindParam(':imagen_blob', $this->imagen_blob, PDO::PARAM_LOB); // ⭐ PDO::PARAM_LOB para BLOB
+        $stmt->bindParam(':imagen_blob', $this->imagen_blob, PDO::PARAM_LOB);
         $stmt->bindParam(':tipo_mime', $this->tipo_mime);
         $stmt->bindParam(':tamano', $this->tamano);
         

@@ -1267,3 +1267,55 @@ table.dataTable > tbody > tr > .dtr-hidden {
 .notification-badge {
     animation: fadeIn 0.3s ease;
 }
+
+/*BOTONES DASHBOARD*/
+
+.btn-dsh-purple {
+    border: 1px solid #8e44ad;
+    color: #8e44ad;
+    background: white;
+}
+.btn-dsh-purple:hover {
+    background-color: #8e44ad;
+    color: white;
+}
+
+.btn-dsh-blue {
+    border: 1px solid #1572E8;
+    color: #1572E8;
+    background: white;
+}
+.btn-dsh-blue:hover {
+    background-color: #1572E8;
+    color: white;
+}
+
+.btn-dsh-green {
+    border: 1px solid #31CE36;
+    color: #31CE36;
+    background: white;
+}
+.btn-dsh-green:hover {
+    background-color: #31CE36;
+    color: white;
+}
+
+.btn-dsh-yellow {
+    border: 1px solid #FFC107;
+    color: #FFC107;
+    background: white;
+}
+.btn-dsh-yellow:hover {
+    background-color: #FFC107;
+    color: white;
+}
+
+.btn-dsh-red {
+    border: 1px solid #F44336;
+    color: #F44336;
+    background: white;
+}
+.btn-dsh-red:hover {
+    background-color: #F44336;
+    color: white;
+}

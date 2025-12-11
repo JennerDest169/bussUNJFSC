@@ -224,36 +224,50 @@ class IncidenciaController
 
 
     // Servir imagen desde la base de datos
-    public function mostrarImagen()
-    {
-        $id = $_GET['id'] ?? null;
+public function mostrarImagen()
+{
+    $id = $_GET['id'] ?? null;
 
-        if (!$id) {
-            http_response_code(404);
-            die('Imagen no encontrada');
-        }
-
-        require_once __DIR__ . '/../model/ImagenIncidencia.php';
-        $imagenModel = new ImagenIncidencia($this->db);
-        $imagen = $imagenModel->obtenerPorId($id);
-
-        if (!$imagen) {
-            http_response_code(404);
-            die('Imagen no encontrada');
-        }
-
-        // Establecer headers para la imagen
-        header('Content-Type: ' . $imagen['tipo_mime']);
-        header('Content-Length: ' . $imagen['tamano']);
-        header('Content-Disposition: inline; filename="' . $imagen['nombre_archivo'] . '"');
-
-        // Cachear la imagen por 1 hora
-        header('Cache-Control: max-age=3600, public');
-        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
-
-        // Enviar el BLOB
-        echo $imagen['imagen_blob'];
-        exit();
+    if (!$id) {
+        http_response_code(404);
+        die('Imagen no encontrada');
     }
+
+    // ⭐ Consulta directa para asegurar que obtenemos el BLOB
+    $query = "SELECT id, nombre_archivo, imagen_blob, tipo_mime, tamano 
+              FROM imagenes_incidencias 
+              WHERE id = :id LIMIT 1";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $imagen = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$imagen) {
+        http_response_code(404);
+        die('Imagen no encontrada en la base de datos');
+    }
+
+    if (empty($imagen['imagen_blob'])) {
+        http_response_code(500);
+        die('La imagen está corrupta o vacía');
+    }
+
+    // ⭐ CRÍTICO: Limpiar cualquier output buffer previo
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    // Establecer headers
+    header('Content-Type: ' . $imagen['tipo_mime']);
+    header('Content-Length: ' . strlen($imagen['imagen_blob']));
+    header('Content-Disposition: inline; filename="' . $imagen['nombre_archivo'] . '"');
+    header('Cache-Control: max-age=3600, public');
+    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
+
+    // Enviar el binario
+    echo $imagen['imagen_blob'];
+    exit();
+}
     
 }

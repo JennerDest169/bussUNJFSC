@@ -205,6 +205,9 @@
                             <!-- Perfil de usuario -->
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                                    <div class="avatar-sm">
+                                        <img src="/public/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                    </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hola,</span>
                                         <span class="fw-bold">
