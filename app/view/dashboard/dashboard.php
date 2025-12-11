@@ -560,7 +560,7 @@ $esAdmin = ($rol === 'Administrador');
                     <p class="text-center text-muted">Explora las funcionalidades disponibles</p>
                 </div>
 
-                <!-- Card: Buses -->
+                <!-- Card: Buses 
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card card-round h-100">
                         <div class="card-body text-center p-4">
@@ -593,8 +593,8 @@ $esAdmin = ($rol === 'Administrador');
                         </div>
                     </div>
                 </div>
-
-                <!-- Card: Conductores -->
+                -->
+                <!-- Card: Conductores 
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card card-round h-100">
                         <div class="card-body text-center p-4">
@@ -627,7 +627,7 @@ $esAdmin = ($rol === 'Administrador');
                         </div>
                     </div>  
                 </div>
-
+                -->
                 <!-- Card: Rastreo GPS -->
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card card-round h-100">

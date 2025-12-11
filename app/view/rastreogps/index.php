@@ -87,7 +87,7 @@ $esConductor = ($_SESSION['tipo_usuario'] ?? '') === 'conductor';
         </div>
 
         <!-- Panel para conductor -->
-        <?php if ($_SESSION['rol'] ?? ''): ?>
+        <?php if ($_SESSION['rol'] === 'Conductor' ?? ''): ?>
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="card card-round card-warning">
@@ -265,12 +265,14 @@ function initGPSManager() {
 function initEventos() {
     // Botón actualizar mapa
     document.getElementById('btnActualizarMapa').addEventListener('click', () => {
+        scrollAlMapa();
         cargarUbicaciones();
         mostrarMensaje('Mapa actualizado manualmente', 'success');
     });
 
     // Botón centrar mapa
     document.getElementById('btnCentrarMapa').addEventListener('click', () => {
+        scrollAlMapa();
         centrarMapaEnBuses();
     });
 
@@ -511,10 +513,7 @@ function actualizarTablaBuses(ubicaciones) {
                 </td>
                 <td>
                     <button class="btn btn-sm btn-outline-primary" onclick="centrarEnBus(${ubicacion.conductor_id})">
-                        <i class="fas fa-search-location"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-info" onclick="verDetallesBus(${ubicacion.conductor_id})">
-                        <i class="fas fa-info-circle"></i>
+                        <i class="fas fa-search"></i>
                     </button>
                 </td>
             </tr>
@@ -644,6 +643,32 @@ async function enviarUbicacionConductor(lat, lng) {
     }
 }
 
+function scrollAlMapa() {
+    const mapa = document.getElementById('map');
+    
+    if (mapa) {
+        // Calcular posición del mapa
+        const mapaTop = mapa.getBoundingClientRect().top + window.pageYOffset;
+        const offset = 100; // Margen superior
+        
+        // Animación suave
+        window.scrollTo({
+            top: mapaTop - offset,
+            behavior: 'smooth'
+        });
+        
+        // Resaltar el mapa
+        const originalBorder = mapa.style.border;
+        mapa.style.border = '3px solid #007bff';
+        mapa.style.transition = 'border 0.5s';
+        
+        // Quitar resaltado después de 2 segundos
+        setTimeout(() => {
+            mapa.style.border = originalBorder;
+        }, 2000);
+    }
+}
+
 // Funciones auxiliares
 function centrarEnBus(conductorId) {
     const marker = markers[conductorId];
@@ -654,7 +679,7 @@ function centrarEnBus(conductorId) {
         // Animación temporal
         const originalIcon = marker.options.icon;
         marker.setIcon(busIcon);
-        
+        scrollAlMapa();
         setTimeout(() => {
             marker.setIcon(originalIcon);
         }, 2000);

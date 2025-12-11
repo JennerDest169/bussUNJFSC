@@ -19,7 +19,7 @@ include __DIR__ . '/../layout/header.php';
     <div class="row">
     <?php if (!empty($buses)): ?>
         <?php foreach ($buses as $bus): ?>
-            <div class="col-md-6 col-xl-4">
+            <div class="col-md-6 col-xl-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">

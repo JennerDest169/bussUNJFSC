@@ -88,7 +88,7 @@
         <li class="nav-item">
             <a class="dropdown-item" href="index.php?controller=Dashboard&action=index">
                 <i class="fas fa-home"></i>
-                <p>Dashboard</p>
+                <p>Inicio</p>
             </a>
         </li>
         <li class="nav-section">
@@ -97,30 +97,35 @@
             </span>
             <h4 class="text-section">Gestión de Transporte</h4>
         </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
         <li class="nav-item <?= $is_buses ? 'active' : '' ?>">
             <a href="index.php?controller=Bus&action=index">
                 <i class="fas fa-bus"></i>
                 <p>Buses</p>
             </a>
         </li>
+        <?php endif; ?>
         <li class="nav-item <?= $is_RastreoGPS ? 'active' : '' ?>">
             <a href="index.php?controller=RastreoGPS&action=index">
                 <i class="fas fa-map-marked-alt"></i>
                 <p>RastreoGPS</p>
             </a>
         </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
         <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
             <a href="index.php?controller=Conductor&action=index">
                 <i class="fas fa-user-tie"></i>
                 <p>Conductores</p>
             </a>
         </li>
+        <?php endif; ?>
         <li class="nav-item <?= $is_rutas ? 'active' : '' ?>">
             <a href="index.php?controller=Ruta&action=index">
                 <i class="fas fa-route"></i>
                 <p>Rutas</p>
             </a>
         </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
         <li class="nav-item <?= $is_asignaciones ? 'active' : '' ?>">
             <a href="index.php?controller=Asignaciones&action=index">
                 <i class="fas fa-clipboard-list"></i>
@@ -133,6 +138,7 @@
                 <p>Usuarios</p>
             </a>
         </li>
+        <?php endif; ?>
         <!-- INCIDENCIAS con badge de notificación -->
         <li class="nav-item" id="nav-incidencias">
             <a class="dropdown-item" href="index.php?controller=Incidencia&action=index">

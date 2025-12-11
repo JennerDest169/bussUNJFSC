@@ -42,11 +42,13 @@ include __DIR__ . '/../layout/header.php';
             <h3 class="fw-bold mb-3">Gestión de Rutas</h3>
             <h6 class="op-7 mb-2">Administre las rutas del sistema de transporte</h6>
         </div>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
         <div class="ms-md-auto py-2 py-md-0">
             <button type="button" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#crearRutaModal">
                 <i class="bi bi-plus-circle me-2"></i>Nueva Ruta
             </button>
         </div>
+        <?php endif; ?>
     </div>
 
     <!-- Mapa Principal -->
@@ -108,7 +110,7 @@ include __DIR__ . '/../layout/header.php';
     <div class="row">
         <?php if (!empty($rutas)): ?>
             <?php foreach ($rutas as $ruta): ?>
-                <div class="col-md-6 col-xl-4">
+                <div class="col-md-6 col-xl-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-3">
@@ -194,7 +196,7 @@ include __DIR__ . '/../layout/header.php';
                                         )">
                                     <i class="bi bi-eye me-1"></i>Ver
                                 </button>
-                                
+                                <?php if ($_SESSION['rol'] == 'Administrador'): ?>
                                 <div>
                                     <button type="button" class="btn btn-sm btn-outline-warning" 
                                             data-bs-toggle="modal" 
@@ -224,6 +226,7 @@ include __DIR__ . '/../layout/header.php';
                                         </a>
                                     <?php endif; ?>
                                 </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
