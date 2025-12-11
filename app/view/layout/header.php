@@ -26,12 +26,28 @@
         });
     </script>
 
+    <style>
+        @media (min-width: 992px) {
+            .encell {
+                display: none !important;
+            }
+        }
+        @media (max-width: 991px) {
+            .encell {
+                display: flex !important;
+            }
+        }
+    </style>
+
     <!-- CSS Files -->
     <link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../../../public/assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="../../../public/assets/css/demo.css" />
-    
+
+    <link rel="stylesheet" href="../../../public/assets/css/extra.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 </head>
@@ -53,75 +69,118 @@
                             <i class="gg-menu-left"></i>
                         </button>
                     </div>
-                    <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
-                    </button>
                 </div>
                 <!-- End Logo Header -->
             </div>
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
-                    <ul class="nav nav-secondary">
-                        <!-- Determinar qué página está activa -->
-                        <?php
-                        $current_page = basename($_SERVER['PHP_SELF']);
-            
-                        $is_dashboard = ($current_page == 'index.php' || $current_page == 'dashboard.php');
-                        $is_buses = ($current_page == 'buses.php');
-                        $is_conductores = ($current_page == 'conductores.php');
-                        $is_rutas = ($current_page == 'rutas.php');
-                        ?>
-                        
-                        <li class="nav-item">
-                            <a class="dropdown-item" href="index.php?controller=Dashboard&action=index">
-                                <i class="fas fa-home"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-section">
-                            <span class="sidebar-mini-icon">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </span>
-                            <h4 class="text-section">Gestión de Transporte</h4>
-                        </li>
-                        <li class="nav-item <?= $is_buses ? 'active' : '' ?>">
-                            <a href="index.php?controller=Buses&action=listar">
-                                <i class="fas fa-bus"></i>
-                                <p>Buses</p>
-                            </a>
-                        </li>
-                        <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
-                            <a href="index.php?controller=Conductor&action=listar">
-                                <i class="fas fa-user-tie"></i>
-                                <p>Conductores</p>
-                            </a>
-                        </li>
-                        <li class="nav-item <?= $is_rutas ? 'active' : '' ?>">
-                            <a href="index.php?controller=Ruta&action=listar">
-                                <i class="fas fa-route"></i>
-                                <p>Rutas</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item" href="index.php?controller=Usuario&action=index">
-                                <i class="fas fa-user"></i>
-                                <p>Usuarios</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item" href="index.php?controller=Incidencia&action=index">
-                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                <p>Incidencias</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item" href="index.php?controller=Comunicado&action=index">
-                                <i class="fa fa-comment" aria-hidden="true"></i>
-                                <p>Comunicados</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+    <ul class="nav nav-secondary">
+        <!-- Determinar qué página está activa -->
+        <?php
+        $current_page = basename($_SERVER['PHP_SELF']);
+        
+        $is_dashboard = ($current_page == 'index.php' || $current_page == 'dashboard.php');
+        $is_buses = ($current_page == 'buses.php');
+        $is_conductores = ($current_page == 'conductores.php');
+        $is_rutas = ($current_page == 'rutas.php');
+        ?>
+        
+        <li class="nav-item">
+            <a class="dropdown-item" href="index.php?controller=Dashboard&action=index">
+                <i class="fas fa-home"></i>
+                <p>Inicio</p>
+            </a>
+        </li>
+        <li class="nav-section">
+            <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section">Gestión de Transporte</h4>
+        </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
+        <li class="nav-item <?= $is_buses ? 'active' : '' ?>">
+            <a href="index.php?controller=Bus&action=index">
+                <i class="fas fa-bus"></i>
+                <p>Buses</p>
+            </a>
+        </li>
+        <?php endif; ?>
+        <li class="nav-item <?= $is_RastreoGPS ? 'active' : '' ?>">
+            <a href="index.php?controller=RastreoGPS&action=index">
+                <i class="fas fa-map-marked-alt"></i>
+                <p>RastreoGPS</p>
+            </a>
+        </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
+        <li class="nav-item <?= $is_conductores ? 'active' : '' ?>">
+            <a href="index.php?controller=Conductor&action=index">
+                <i class="fas fa-user-tie"></i>
+                <p>Conductores</p>
+            </a>
+        </li>
+        <?php endif; ?>
+        <li class="nav-item <?= $is_rutas ? 'active' : '' ?>">
+            <a href="index.php?controller=Ruta&action=index">
+                <i class="fas fa-route"></i>
+                <p>Rutas</p>
+            </a>
+        </li>
+        <?php if ($_SESSION['rol'] == 'Administrador'): ?>
+        <li class="nav-item <?= $is_asignaciones ? 'active' : '' ?>">
+            <a href="index.php?controller=Asignaciones&action=index">
+                <i class="fas fa-clipboard-list"></i>
+                <p>Asignaciones</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="dropdown-item" href="index.php?controller=Usuario&action=index">
+                <i class="fas fa-user"></i>
+                <p>Usuarios</p>
+            </a>
+        </li>
+        <?php endif; ?>
+        <!-- INCIDENCIAS con badge de notificación -->
+        <li class="nav-item" id="nav-incidencias">
+            <a class="dropdown-item" href="index.php?controller=Incidencia&action=index">
+                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                <p>Incidencias</p>
+                <!-- Badge de notificación (se muestra dinámicamente) -->
+                <span class="notification-badge incidencias" id="badge-incidencias" style="display: none;">0</span>
+            </a>
+        </li>
+
+        <!-- COMUNICADOS con badge de notificación -->
+        <li class="nav-item" id="nav-comunicados">
+            <a class="dropdown-item" href="index.php?controller=Comunicado&action=index">
+                <i class="fa fa-comment" aria-hidden="true"></i>
+                <p>Comunicados</p>
+                <!-- Badge de notificación (se muestra dinámicamente) -->
+                <span class="notification-badge comunicados" id="badge-comunicados" style="display: none;">0</span>
+            </a>
+        </li>
+    </ul>
+    
+    <!-- Logout fuera de la lista principal pero dentro del sidebar -->
+    <div class="sidebar-footer" style="margin-top: auto; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+        <ul class="nav nav-secondary">
+            <li class="nav-section encell">
+            <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section"><?php
+                                            $usuario = $_SESSION['usuario'];
+                                            echo "" . $usuario['nombre'];
+                                            ?></h4>
+        </li>
+<li class="nav-item encell">
+                <a class="dropdown-item" href="index.php?controller=Auth&action=logout">
+                    <i class="fas fa-door-open"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
             </div>
         </div>
         <!-- End Sidebar -->
@@ -142,9 +201,6 @@
                                 <i class="gg-menu-left"></i>
                             </button>
                         </div>
-                        <button class="topbar-toggler more">
-                            <i class="gg-more-vertical-alt"></i>
-                        </button>
                     </div>
                     <!-- End Logo Header -->
                 </div>
@@ -156,7 +212,7 @@
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                                     <div class="avatar-sm">
-                                        <img src="/BUSS/public/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                        <img src="/public/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hola,</span>
@@ -222,7 +278,7 @@
     <!-- Kaiadmin JS -->
     <script src="../../../public/assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../../../public/assets/js/setting-demo2.js"></script>
+
     <script>
       $(document).ready(function () {
         $("#basic-datatables").DataTable({});

@@ -7,57 +7,117 @@ class ConductorController {
 
     public function __construct() {
         $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->conn = $db->connect();
     }
 
-    public function listar() {
-        $query = "SELECT c.*, b.placa AS bus_placa
+    public function index() {
+
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+
+        $query = "SELECT c.*, u.nombre as nombre, u.correo as correo
                   FROM conductores c
-                  LEFT JOIN asignaciones a ON a.conductor_id = c.id
-                  LEFT JOIN buses b ON a.bus_id = b.id";
+                  LEFT JOIN usuarios u ON u.id = c.id_usuarios";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conductores = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        include __DIR__ . '/../view/conductor/index.php';
     }
 
-    public function obtenerPorId($id) {
-        $query = "SELECT * FROM conductores WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function crear() {
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $conductor = new Conductor();
+            $conductor->nombre = $_POST['nombre'];
+            $conductor->dni = $_POST['dni'];
+            $conductor->correo = $_POST['correo'];
+            $conductor->telefono = $_POST['telefono'];
+            $conductor->licencia = $_POST['licencia'];
+            $conductor->estado = $_POST['estado'] ?? 'Activo';
+            $conductor->fecha_registro = date('Y-m-d H:i:s');
+
+            $query = "INSERT INTO conductores (nombre, dni, correo, telefono, licencia, estado, fecha_registro)
+                      VALUES (:nombre, :dni, :correo, :telefono, :licencia, :estado, :fecha_registro)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':nombre', $conductor->nombre);
+            $stmt->bindParam(':dni', $conductor->dni);
+            $stmt->bindParam(':correo', $conductor->correo);
+            $stmt->bindParam(':telefono', $conductor->telefono);
+            $stmt->bindParam(':licencia', $conductor->licencia);
+            $stmt->bindParam(':estado', $conductor->estado);
+            $stmt->bindParam(':fecha_registro', $conductor->fecha_registro);
+            $stmt->execute();
+
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        } else {
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        }
     }
 
-    public function crear(Conductor $conductor) {
-        $query = "INSERT INTO conductores (nombre, apellido, dni, telefono, bus_asignado) 
-                  VALUES (:nombre, :apellido, :dni, :telefono, :bus_asignado)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':nombre', $conductor->nombre);
-        $stmt->bindParam(':apellido', $conductor->apellido);
-        $stmt->bindParam(':dni', $conductor->dni);
-        $stmt->bindParam(':telefono', $conductor->telefono);
-        $stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
-        return $stmt->execute();
+
+    public function actualizar() {
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $conductor = new Conductor();
+            $conductor->id = $_POST['id'];
+            $conductor->dni = $_POST['dni'];
+            $conductor->telefono = $_POST['telefono'];
+            $conductor->licencia = $_POST['licencia'];
+            $conductor->estado = $_POST['estado'];
+
+            $query = "UPDATE conductores 
+                      SET dni = :dni, telefono = :telefono, licencia = :licencia, estado = :estado
+                      WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $conductor->id);
+            $stmt->bindParam(':dni', $conductor->dni);
+            $stmt->bindParam(':telefono', $conductor->telefono);
+            $stmt->bindParam(':licencia', $conductor->licencia);
+            $stmt->bindParam(':estado', $conductor->estado);
+            $stmt->execute();
+
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        } else {
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        }
     }
 
-    public function actualizar(Conductor $conductor) {
-        $query = "UPDATE conductores 
-                  SET nombre = :nombre, apellido = :apellido, dni = :dni, telefono = :telefono, bus_asignado = :bus_asignado 
-                  WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $conductor->id);
-        $stmt->bindParam(':nombre', $conductor->nombre);
-        $stmt->bindParam(':apellido', $conductor->apellido);
-        $stmt->bindParam(':dni', $conductor->dni);
-        $stmt->bindParam(':telefono', $conductor->telefono);
-        $stmt->bindParam(':bus_asignado', $conductor->bus_asignado);
-        return $stmt->execute();
-    }
+    public function eliminar() {
+        if (!isset($_SESSION['logueado'])) {
+            header("Location: index.php?controller=Auth&action=login");
+            exit;
+        }
 
-    public function eliminar($id) {
-        $query = "DELETE FROM conductores WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+
+            $query = "UPDATE conductores 
+                    SET estado = 'Inactivo'
+                    WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        } else {
+            header("Location: index.php?controller=Conductor&action=index");
+            exit;
+        }
     }
 }
