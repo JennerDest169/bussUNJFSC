@@ -18,8 +18,35 @@ class AsignacionesController {
         }
         
         $asignaciones = $this->listar();
+        $buses = $this->obtenerBuses();
+        $conductores = $this->obtenerConductores();
+        $rutas = $this->obtenerRutas();
         
         include __DIR__ . '/../view/asignaciones/index.php';
+    }
+
+    public function obtenerBuses() {
+        $query = "SELECT id, placa, modelo FROM buses WHERE estado = 'Activo'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerConductores() {
+        $query = "SELECT c.id, u.nombre
+                    FROM conductores c
+                    inner join usuarios u on c.id_usuarios = u.id
+                    WHERE c.estado != 'Inactivo'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerRutas() {
+        $query = "SELECT id, nombre, origen, destino FROM rutas WHERE estado = 'Activa'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function listar() {
@@ -45,33 +72,31 @@ class AsignacionesController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Crear el objeto AsignacionModel a partir del formulario
-            $asignacion = new Asignaciones(
-                null, // id (auto-increment)
-                $_POST['bus_id'],
-                $_POST['conductor_id'],
-                $_POST['ruta_id'],
-                $_POST['estado'] ?? 'En ruta', // Valor por defecto
-                $_POST['observacion'] ?? null,
-                date('Y-m-d H:i:s') // fecha_asignacion actual
-            );
+            $bus_id = $_POST['bus_id'];
+            $conductor_id = $_POST['conductor_id'];
+            $ruta_id = $_POST['ruta_id'];
+            $estado = $_POST['estado'] ?? 'En ruta';
+            $observacion = $_POST['observacion'] ?? null;
+            $fecha_asignacion = date('Y-m-d H:i:s');
 
             // Insertar en la base de datos
             $query = "INSERT INTO asignaciones 
-                     (J23_bus_id, J23_conductor_id, J23_ruta_id, A2_estado, A2_observacion, A2_fecha_asignacion)
+                     (bus_id, conductor_id, ruta_id, estado, observacion, fecha_asignacion)
                      VALUES (:bus_id, :conductor_id, :ruta_id, :estado, :observacion, :fecha_asignacion)";
             
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':bus_id', $asignacion->getBugId());
-            $stmt->bindParam(':conductor_id', $asignacion->getConductorId());
-            $stmt->bindParam(':ruta_id', $asignacion->getRutaId());
-            $stmt->bindParam(':estado', $asignacion->getEstado());
-            $stmt->bindParam(':observacion', $asignacion->getObservacion());
-            $stmt->bindParam(':fecha_asignacion', $asignacion->getFechaAsignacion());
+            $stmt->bindParam(':bus_id', $bus_id);
+            $stmt->bindParam(':conductor_id', $conductor_id);
+            $stmt->bindParam(':ruta_id', $ruta_id);
+            $stmt->bindParam(':estado', $estado);
+            $stmt->bindParam(':observacion', $observacion);
+            $stmt->bindParam(':fecha_asignacion', $fecha_asignacion);
             $stmt->execute();
 
             // Mostrar la lista actualizada
-            $asignaciones = $this->listar();
-            include __DIR__ . '/../view/asignaciones/index.php';
+            $_SESSION['exito'] = "Asignación creada correctamente";
+            header("Location: index.php?controller=Asignaciones&action=index");
+            exit;
         } else {
             // Si no viene por POST, redirigir
             header("Location: index.php?controller=Asignaciones&action=index");
@@ -87,39 +112,38 @@ class AsignacionesController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Crear el objeto AsignacionModel desde los datos del formulario
-            $asignacion = new Asignaciones(
-                $_POST['id'],
-                $_POST['bus_id'],
-                $_POST['conductor_id'],
-                $_POST['ruta_id'],
-                $_POST['estado'],
-                $_POST['observacion'],
-                $_POST['fecha_asignacion']
-            );
+            $id = $_POST['id'];
+            $bus_id = $_POST['bus_id'];
+            $conductor_id = $_POST['conductor_id'];
+            $ruta_id = $_POST['ruta_id'];
+            $estado = $_POST['estado'];
+            $observacion = $_POST['observacion'];
+            $fecha_asignacion = $_POST['fecha_asignacion'];
 
             // Actualizar en la base de datos
             $query = "UPDATE asignaciones 
-                     SET J23_bus_id = :bus_id, 
-                         J23_conductor_id = :conductor_id, 
-                         J23_ruta_id = :ruta_id, 
-                         A2_estado = :estado, 
-                         A2_observacion = :observacion, 
-                         A2_fecha_asignacion = :fecha_asignacion
-                     WHERE J23_id = :id";
+                     SET bus_id = :bus_id, 
+                         conductor_id = :conductor_id, 
+                         ruta_id = :ruta_id, 
+                         estado = :estado, 
+                         observacion = :observacion, 
+                         fecha_asignacion = :fecha_asignacion
+                     WHERE id = :id";
             
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':id', $asignacion->getId());
-            $stmt->bindParam(':bus_id', $asignacion->getBugId());
-            $stmt->bindParam(':conductor_id', $asignacion->getConductorId());
-            $stmt->bindParam(':ruta_id', $asignacion->getRutaId());
-            $stmt->bindParam(':estado', $asignacion->getEstado());
-            $stmt->bindParam(':observacion', $asignacion->getObservacion());
-            $stmt->bindParam(':fecha_asignacion', $asignacion->getFechaAsignacion());
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':bus_id', $bus_id);
+            $stmt->bindParam(':conductor_id', $conductor_id);
+            $stmt->bindParam(':ruta_id', $ruta_id);
+            $stmt->bindParam(':estado', $estado);
+            $stmt->bindParam(':observacion', $observacion);
+            $stmt->bindParam(':fecha_asignacion', $fecha_asignacion);
             $stmt->execute();
 
             // Volver al listado actualizado
-            $asignaciones = $this->listar();
-            include __DIR__ . '/../view/asignaciones/index.php';
+            $_SESSION['exito'] = "Asignación actualizada correctamente";
+            header("Location: index.php?controller=Asignaciones&action=index");
+            exit;
         } else {
             // Si se intenta acceder sin POST, redirige al listado
             header("Location: index.php?controller=Asignaciones&action=index");
@@ -133,55 +157,25 @@ class AsignacionesController {
             exit;
         }
 
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
+        // Cambiar de GET a POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            $id = $_POST['id'];
 
-            // Cambiar estado a 'Completado' en lugar de eliminar
             $query = "UPDATE asignaciones
-                     SET A2_estado = 'Completado'
-                     WHERE J23_id = :id";
+                    SET estado = 'Completado'
+                    WHERE id = :id";
             
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            // Volver al listado actualizado
-            $asignaciones = $this->listar();
-            include __DIR__ . '/../view/asignaciones/index.php';
+            $_SESSION['exito'] = "Asignación finalizada correctamente";
+            header("Location: index.php?controller=Asignaciones&action=index");
+            exit;
         } else {
-            // Si no hay ID, redirigir al listado
             header("Location: index.php?controller=Asignaciones&action=index");
             exit;
         }
-    }
-
-    public function ver($id) {
-        if (!isset($_SESSION['logueado'])) {
-            header("Location: index.php?controller=Auth&action=login");
-            exit;
-        }
-
-        $asignacion = $this->obtenerPorId($id);
-        include __DIR__ . '/../view/asignaciones/ver.php';
-    }
-
-    public function editar($id) {
-        if (!isset($_SESSION['logueado'])) {
-            header("Location: index.php?controller=Auth&action=login");
-            exit;
-        }
-
-        $asignacion = $this->obtenerPorId($id);
-        include __DIR__ . '/../view/asignaciones/editar.php';
-    }
-
-    public function nuevo() {
-        if (!isset($_SESSION['logueado'])) {
-            header("Location: index.php?controller=Auth&action=login");
-            exit;
-        }
-
-        include __DIR__ . '/../view/asignaciones/nuevo.php';
     }
 }
 ?>
