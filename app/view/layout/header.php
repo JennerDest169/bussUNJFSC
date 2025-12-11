@@ -59,7 +59,7 @@
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
                     <a href="index.php?controller=Dashboard&action=index" class="logo">
-                        <img src="../../../public/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="160" />
+                        <img src="../../../public/assets/img/logofaustino.png" alt="navbar brand" class="navbar-brand" height="38" />
                     </a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
